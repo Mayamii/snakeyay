@@ -12,6 +12,7 @@ import javax.swing.Timer;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
+    //hier ist coolkommentar
 
     private int[] _snekXLen = new int[750];
     private int[] _snekYLen = new int[750];
