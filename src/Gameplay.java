@@ -140,7 +140,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (_enemyXPos[_xPos] == _snekXLen[0]
                 && _enemyYPos[_yPos] == _snekYLen[0])
         {
-            _lengthOfSnek++;
+            // _lengthOfSnek++;
             _xPos = _random.nextInt(34);
             _yPos = _random.nextInt(23);
         }
