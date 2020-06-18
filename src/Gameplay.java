@@ -92,7 +92,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
 
-        _titleImage = new ImageIcon("snaketitle.jpg");
+        _titleImage = new ImageIcon("snaketitle.png");
         _titleImage.paintIcon(this, g, 25, 11);
 
         g.setColor(Color.white);
