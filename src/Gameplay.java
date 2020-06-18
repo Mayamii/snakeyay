@@ -12,7 +12,10 @@ import javax.swing.Timer;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
-    //hier ist coolkommentar
+	/**
+	 * ActionListener und MouseListener kennen wir bereits aus dem Draw Projekt. Hier nutzen wir den KeyListener, um den Knopfdruck der up, down, left, und right Tasten zu registrieren.
+	 * Hier wird die Spieloberfläche initialisiert. Die wichtigsten Eigenschaften der Schlange (Snake) als Variablen deklariert.
+	 */
 
     private int[] _snekXLen = new int[750];
     private int[] _snekYLen = new int[750];
@@ -21,6 +24,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     boolean _right = false;
     boolean _up = false;
     boolean _down = false;
+    
+    
 
     private void setFalse()
     {
