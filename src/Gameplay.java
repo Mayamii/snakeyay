@@ -22,6 +22,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     boolean _up = false;
     boolean _down = false;
     private int _score = 0;
+    boolean _gameover = false;
 
     private void setFalse()
     {
@@ -158,6 +159,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }
         _enemyImage.paintIcon(this, g, _enemyXPos[_xPos], _enemyYPos[_yPos]);
 
+        //gameover
         for (int b = 1; b < _lengthOfSnek; b++)
         {
             if (_snekXLen[b] == _snekXLen[0] && _snekYLen[b] == _snekYLen[0])
@@ -166,6 +168,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 _left = false;
                 _up = false;
                 _down = false;
+                _gameover = true;
 
                 g.setColor(Color.white);
                 g.setFont(new Font("arial", Font.BOLD, 50));
@@ -299,52 +302,56 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     {
         if (e.getKeyCode() == KeyEvent.VK_SPACE)
         {
+            _gameover = false;
             _moves = 0;
             _score = 0;
             _lengthOfSnek = 3;
             repaint();
 
         }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+        if (!_gameover)
         {
-            _moves++;
-            if (!_left)
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
-                setFalse();
-                _right = true;
+                _moves++;
+                if (!_left)
+                {
+                    setFalse();
+                    _right = true;
 
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
-        {
-            _moves++;
-            if (!_right)
-            {
-                setFalse();
-                _left = true;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_UP)
-        {
-            _moves++;
-            if (!_down)
-            {
-                setFalse();
-                _up = true;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
-            _moves++;
-            if (!_up)
-            {
-                setFalse();
-                _down = true;
+                }
             }
 
+            if (e.getKeyCode() == KeyEvent.VK_LEFT)
+            {
+                _moves++;
+                if (!_right)
+                {
+                    setFalse();
+                    _left = true;
+                }
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_UP)
+            {
+                _moves++;
+                if (!_down)
+                {
+                    setFalse();
+                    _up = true;
+                }
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                _moves++;
+                if (!_up)
+                {
+                    setFalse();
+                    _down = true;
+                }
+
+            }
         }
 
     }
