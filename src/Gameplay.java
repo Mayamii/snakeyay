@@ -13,22 +13,18 @@ import javax.swing.Timer;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
+    private static final int GRIDSIZE = 25;
+    private static final int OFFSETY = 75;
+    private static final int OFFSETX = 25;
 
-    private Snek _snek;
+    private Snake _snake;
 
     private int _score = 0;
     boolean _gameover = false;
-
     private ImageIcon _rightMouth;
     private ImageIcon _leftMouth;
     private ImageIcon _upMouth;
     private ImageIcon _downMouth;
-
-    private static final int GRIDSIZE = 25;
-
-    private static final int OFFSETY = 75;
-    private static final int OFFSETX = 25;
-
     private Timer _timer;
     private int _delay = 100;
 
@@ -51,7 +47,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        _snek = new Snek();
+        _snake = new Snake();
         for (int i = 0; i < 34; i++)
         {
             _enemyXPos[i] = 25 + (25 * i);
@@ -101,13 +97,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         //length of snake
         g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
-        g.drawString("Length: " + _snek.getLength(), 780, 50);
+        g.drawString("Length: " + _snake.getLength(), 780, 50);
 
         paintSnake(g);
 
-        if (hatEssenGefunden())
+        if (foundFood())
         {
-            _snek.eats();
+            _snake.eats();
             _score++;
             _xPos = _random.nextInt(34);
             _yPos = _random.nextInt(23);
@@ -115,30 +111,38 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _enemyImage.paintIcon(this, g, _enemyXPos[_xPos], _enemyYPos[_yPos]);
 
         //gameover
-        for (int b = 1; b < _snek.getLength() - 1; b++)
+        for (int b = 1; b < _snake.getLength() - 1; b++)
         {
-            if (_snek.getBodyX(b) == _snek.getHeadX()
-                    && _snek.getBodyY(b) == _snek.getHeadY())
+            if (bitesOwnBody(b))
             {
-                _snek.setMove(false);
-                _gameover = true;
-
-                g.setColor(Color.white);
-                g.setFont(new Font("arial", Font.BOLD, 50));
-                g.drawString("Game Over", 300, 300);
-
-                g.setFont(new Font("arial", Font.BOLD, 20));
-                g.drawString("Press Space to restart", 350, 340);
-
+                gameIsOver(g);
             }
         }
-
         g.dispose();
     }
 
-    private boolean hatEssenGefunden()
+    private void gameIsOver(Graphics g)
     {
-        return _xPos == _snek.getHeadX() && _yPos == _snek.getHeadY();
+        _snake.setMove(false);
+        _gameover = true;
+
+        g.setColor(Color.white);
+        g.setFont(new Font("arial", Font.BOLD, 50));
+        g.drawString("Game Over", 300, 300);
+
+        g.setFont(new Font("arial", Font.BOLD, 20));
+        g.drawString("Press Space to restart", 350, 340);
+    }
+
+    private boolean bitesOwnBody(int b)
+    {
+        return _snake.getBodyX(b) == _snake.getHeadX()
+                && _snake.getBodyY(b) == _snake.getHeadY();
+    }
+
+    private boolean foundFood()
+    {
+        return _xPos == _snake.getHeadX() && _yPos == _snake.getHeadY();
     }
 
     private void paintSnake(Graphics g)
@@ -150,25 +154,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         //            mouth = _rightMouth;
         //
         //        }
-        if (_snek.getDirection() == Direction.LEFT)
+        if (_snake.getDirection() == Direction.LEFT)
         {
             mouth = _leftMouth;
         }
-        if (_snek.getDirection() == Direction.UP)
+        if (_snake.getDirection() == Direction.UP)
         {
             mouth = _upMouth;
         }
-        if (_snek.getDirection() == Direction.DOWN)
+        if (_snake.getDirection() == Direction.DOWN)
         {
             mouth = _downMouth;
         }
-        mouth.paintIcon(this, g, _snek.getHeadX() * GRIDSIZE + OFFSETX,
-                _snek.getHeadY() * GRIDSIZE + OFFSETY);
-        for (int a = 0; a < _snek.getLength() - 1; a++)
+        mouth.paintIcon(this, g, _snake.getHeadX() * GRIDSIZE + OFFSETX,
+                _snake.getHeadY() * GRIDSIZE + OFFSETY);
+        for (int a = 0; a < _snake.getLength() - 1; a++)
         {
             _snekImage.paintIcon(this, g,
-                    _snek.getBodyX(a) * GRIDSIZE + OFFSETX,
-                    _snek.getBodyY(a) * GRIDSIZE + OFFSETY);
+                    _snake.getBodyX(a) * GRIDSIZE + OFFSETX,
+                    _snake.getBodyY(a) * GRIDSIZE + OFFSETY);
         }
 
     }
@@ -177,7 +181,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         _timer.start();
-        _snek.move();
+        _snake.move();
         repaint();
 
     }
@@ -196,7 +200,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             _gameover = false;
             _score = 0;
-            _snek = new Snek();
+            _snake = new Snake();
             repaint();
 
         }
@@ -204,26 +208,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
-                _snek.setMove(true);
-                _snek.setDirection(Direction.RIGHT);
+                _snake.setMove(true);
+                _snake.setDirection(Direction.RIGHT);
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT)
             {
-                _snek.setMove(true);
-                _snek.setDirection(Direction.LEFT);
+                _snake.setMove(true);
+                _snake.setDirection(Direction.LEFT);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_UP)
             {
-                _snek.setMove(true);
-                _snek.setDirection(Direction.UP);
+                _snake.setMove(true);
+                _snake.setDirection(Direction.UP);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
-                _snek.setMove(true);
-                _snek.setDirection(Direction.DOWN);
-
+                _snake.setMove(true);
+                _snake.setDirection(Direction.DOWN);
             }
         }
     }

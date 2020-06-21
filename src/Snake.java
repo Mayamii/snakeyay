@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class Snek
+public class Snake
 {
     private Position _head;
     private LinkedList<Position> _body;
@@ -8,7 +8,7 @@ public class Snek
     private boolean _hasFood;
     private boolean _moving;
 
-    public Snek()
+    public Snake()
     {
         _direction = Direction.RIGHT;
         _head = new Position(4, 4);
