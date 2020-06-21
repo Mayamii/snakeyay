@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -28,16 +27,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private Timer _timer;
     private int _delay = 100;
 
-    private ImageIcon _snekImage;
+    private ImageIcon _snakeImage;
 
-    private int[] _enemyXPos = new int[34];
-
-    private int[] _enemyYPos = new int[25];
-
-    private ImageIcon _enemyImage;
-    private Random _random = new Random();
-    private int _xPos = _random.nextInt(34);
-    private int _yPos = _random.nextInt(23);
+    private ImageIcon _foodImage;
+    private Food _food;
 
     private ImageIcon _titleImage;
 
@@ -48,16 +41,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         _snake = new Snake();
-        for (int i = 0; i < 34; i++)
-        {
-            _enemyXPos[i] = 25 + (25 * i);
-        }
-        for (int i = 0; i <
-
-                (625 / 25); i++)
-        {
-            _enemyYPos[i] = (25 * i) + 75;
-        }
+        _food = new Food();
         _timer = new Timer(_delay, this);
         _timer.start();
 
@@ -69,8 +53,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _leftMouth = new ImageIcon("leftmouth.png");
         _upMouth = new ImageIcon("upmouth.png");
         _downMouth = new ImageIcon("downmouth.png");
-        _snekImage = new ImageIcon("snakeimage.png");
-        _enemyImage = new ImageIcon("enemy.png");
+        _snakeImage = new ImageIcon("snakeimage.png");
+        _foodImage = new ImageIcon("enemy.png");
         _titleImage = new ImageIcon("snaketitle.png");
 
     }
@@ -105,10 +89,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             _snake.eats();
             _score++;
-            _xPos = _random.nextInt(34);
-            _yPos = _random.nextInt(23);
+            _food = new Food();
+
         }
-        _enemyImage.paintIcon(this, g, _enemyXPos[_xPos], _enemyYPos[_yPos]);
+        _foodImage.paintIcon(this, g, _food.getFoodX() * GRIDSIZE + OFFSETX,
+                _food.getFoodY() * GRIDSIZE + OFFSETY);
 
         //gameover
         for (int b = 1; b < _snake.getLength() - 1; b++)
@@ -142,7 +127,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private boolean foundFood()
     {
-        return _xPos == _snake.getHeadX() && _yPos == _snake.getHeadY();
+        return _food.getFoodX() == _snake.getHeadX()
+                && _food.getFoodY() == _snake.getHeadY();
     }
 
     private void paintSnake(Graphics g)
@@ -170,7 +156,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 _snake.getHeadY() * GRIDSIZE + OFFSETY);
         for (int a = 0; a < _snake.getLength() - 1; a++)
         {
-            _snekImage.paintIcon(this, g,
+            _snakeImage.paintIcon(this, g,
                     _snake.getBodyX(a) * GRIDSIZE + OFFSETX,
                     _snake.getBodyY(a) * GRIDSIZE + OFFSETY);
         }

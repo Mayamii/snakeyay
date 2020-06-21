@@ -6,6 +6,9 @@ public class Food
     private int _xPos;
     private int _yPos;
     private Random _random;
+    //    private int[] _enemyXPos = new int[34];
+    //
+    //    private int[] _enemyYPos = new int[25];
 
     public Food()
     {
@@ -14,13 +17,13 @@ public class Food
         _pos = new Position(_xPos, _yPos);
     }
 
-    public int getXPos()
+    public int getFoodX()
     {
-        return _xPos;
+        return _pos.getX();
     }
 
-    public int getYPos()
+    public int getFoodY()
     {
-        return _yPos;
+        return _pos.getY();
     }
 }
