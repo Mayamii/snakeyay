@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,31 +13,18 @@ import javax.swing.Timer;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
-    //hier ist coolkommentar
+    private static final int GRIDSIZE = 25;
+    private static final int OFFSETY = 75;
+    private static final int OFFSETX = 25;
 
-    private int[] _snekXLen = new int[750];
-    private int[] _snekYLen = new int[750];
+    private Snake _snake;
 
-    boolean _left = false;
-    boolean _right = false;
-    boolean _up = false;
-    boolean _down = false;
-
-    private void setFalse()
-    {
-        _left = false;
-        _right = false;
-        _up = false;
-        _down = false;
-    }
-
+    private int _score = 0;
+    boolean _gameover = false;
     private ImageIcon _rightMouth;
     private ImageIcon _leftMouth;
     private ImageIcon _upMouth;
     private ImageIcon _downMouth;
-
-    private int _lengthOfSnek = 3;
-
     private Timer _timer;
     private int _delay = 100;
 
@@ -51,15 +39,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private int _xPos = _random.nextInt(34);
     private int _yPos = _random.nextInt(23);
 
-    private int _moves = 0;
-
     private ImageIcon _titleImage;
 
     public Gameplay()
     {
+        loadGraphics();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        _snake = new Snake();
         for (int i = 0; i < 34; i++)
         {
             _enemyXPos[i] = 25 + (25 * i);
@@ -75,24 +63,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     }
 
+    private void loadGraphics()
+    {
+        _rightMouth = new ImageIcon("rightmouth.png");
+        _leftMouth = new ImageIcon("leftmouth.png");
+        _upMouth = new ImageIcon("upmouth.png");
+        _downMouth = new ImageIcon("downmouth.png");
+        _snekImage = new ImageIcon("snakeimage.png");
+        _enemyImage = new ImageIcon("enemy.png");
+        _titleImage = new ImageIcon("snaketitle.png");
+
+    }
+
     public void paint(Graphics g)
     {
-        // wird nur ganz am Anfang ausgelöst, wenn die Schlage sich noch nicht bewegt
-        if (_moves == 0)
-        {
-            _snekXLen[2] = 50;
-            _snekXLen[1] = 75;
-            _snekXLen[0] = 100;
 
-            _snekYLen[2] = 100;
-            _snekYLen[1] = 100;
-            _snekYLen[0] = 100;
-        }
         // draw title image border
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
 
-        _titleImage = new ImageIcon("snaketitle.png");
         _titleImage.paintIcon(this, g, 25, 11);
 
         g.setColor(Color.white);
@@ -100,214 +89,146 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.black);
         g.fillRect(25, 75, 850, 575);
 
-        _rightMouth = new ImageIcon("rightmouth.png");
-        _rightMouth.paintIcon(this, g, _snekXLen[0], _snekYLen[0]);
+        //draw scores
+        g.setColor(Color.white);
+        g.setFont(new Font("arial", Font.PLAIN, 14));
+        g.drawString("Scores: " + _score, 780, 30);
 
-        // diese Schleife malt die Schlange. Position 0 ist hierbei das Gesicht und alles danach ist der Körper
-        for (int a = 0; a < _lengthOfSnek; a++)
+        //length of snake
+        g.setColor(Color.white);
+        g.setFont(new Font("arial", Font.PLAIN, 14));
+        g.drawString("Length: " + _snake.getLength(), 780, 50);
+
+        paintSnake(g);
+
+        if (foundFood())
         {
-            if (a == 0 && _right)
-            {
-                _rightMouth = new ImageIcon("rightmouth.png");
-                _rightMouth.paintIcon(this, g, _snekXLen[a], _snekYLen[a]);
-            }
-
-            if (a == 0 && _left)
-            {
-                _leftMouth = new ImageIcon("leftmouth.png");
-                _leftMouth.paintIcon(this, g, _snekXLen[a], _snekYLen[a]);
-            }
-            if (a == 0 && _up)
-            {
-                _upMouth = new ImageIcon("upmouth.png");
-                _upMouth.paintIcon(this, g, _snekXLen[a], _snekYLen[a]);
-            }
-            if (a == 0 && _down)
-            {
-                _downMouth = new ImageIcon("downmouth.png");
-                _downMouth.paintIcon(this, g, _snekXLen[a], _snekYLen[a]);
-            }
-
-            if (a != 0)
-            {
-                _snekImage = new ImageIcon("snakeimage.png");
-                _snekImage.paintIcon(this, g, _snekXLen[a], _snekYLen[a]);
-
-            }
-        }
-
-        _enemyImage = new ImageIcon("enemy.png");
-        if (_enemyXPos[_xPos] == _snekXLen[0]
-                && _enemyYPos[_yPos] == _snekYLen[0])
-        {
-            _lengthOfSnek++;
+            _snake.eats();
+            _score++;
             _xPos = _random.nextInt(34);
             _yPos = _random.nextInt(23);
         }
         _enemyImage.paintIcon(this, g, _enemyXPos[_xPos], _enemyYPos[_yPos]);
 
+        //gameover
+        for (int b = 1; b < _snake.getLength() - 1; b++)
+        {
+            if (bitesOwnBody(b))
+            {
+                gameIsOver(g);
+            }
+        }
         g.dispose();
+    }
+
+    private void gameIsOver(Graphics g)
+    {
+        _snake.setMove(false);
+        _gameover = true;
+
+        g.setColor(Color.white);
+        g.setFont(new Font("arial", Font.BOLD, 50));
+        g.drawString("Game Over", 300, 300);
+
+        g.setFont(new Font("arial", Font.BOLD, 20));
+        g.drawString("Press Space to restart", 350, 340);
+    }
+
+    private boolean bitesOwnBody(int b)
+    {
+        return _snake.getBodyX(b) == _snake.getHeadX()
+                && _snake.getBodyY(b) == _snake.getHeadY();
+    }
+
+    private boolean foundFood()
+    {
+        return _xPos == _snake.getHeadX() && _yPos == _snake.getHeadY();
+    }
+
+    private void paintSnake(Graphics g)
+    {
+        ImageIcon mouth = _rightMouth;
+        //Diese ifKlammer braucht man nicht, da es per Default auf rightmouth.png gesetzt ist, um Nullpointer zu verhindern
+        //        if (_snek.giveDirection() == Direction.RIGHT)
+        //        {
+        //            mouth = _rightMouth;
+        //
+        //        }
+        if (_snake.getDirection() == Direction.LEFT)
+        {
+            mouth = _leftMouth;
+        }
+        if (_snake.getDirection() == Direction.UP)
+        {
+            mouth = _upMouth;
+        }
+        if (_snake.getDirection() == Direction.DOWN)
+        {
+            mouth = _downMouth;
+        }
+        mouth.paintIcon(this, g, _snake.getHeadX() * GRIDSIZE + OFFSETX,
+                _snake.getHeadY() * GRIDSIZE + OFFSETY);
+        for (int a = 0; a < _snake.getLength() - 1; a++)
+        {
+            _snekImage.paintIcon(this, g,
+                    _snake.getBodyX(a) * GRIDSIZE + OFFSETX,
+                    _snake.getBodyY(a) * GRIDSIZE + OFFSETY);
+        }
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         _timer.start();
-        if (_right)
-        {
-            _moves = 1;
-            for (int r = _lengthOfSnek - 1; r >= 0; r--)
-            {
-                _snekYLen[r + 1] = _snekYLen[r];
-            }
-            for (int r = _lengthOfSnek; r >= 0; r--)
-            {
-                if (r == 0)
-                {
-                    _snekXLen[r] = _snekXLen[r] + 25;
-                }
-                else
-                {
-                    _snekXLen[r] = _snekXLen[r - 1];
-                }
-                if (_snekXLen[r] > 850)
-                {
-                    _snekXLen[r] = 25;
+        _snake.move();
+        repaint();
 
-                }
-            }
-            repaint();
-        }
-        if (_left)
-        {
-            _moves = 1;
-            for (int r = _lengthOfSnek - 1; r >= 0; r--)
-            {
-                _snekYLen[r + 1] = _snekYLen[r];
-            }
-            for (int r = _lengthOfSnek; r >= 0; r--)
-            {
-                if (r == 0)
-                {
-                    _snekXLen[r] = _snekXLen[r] - 25;
-                }
-                else
-                {
-                    _snekXLen[r] = _snekXLen[r - 1];
-                }
-                if (_snekXLen[r] < 25)
-                {
-                    _snekXLen[r] = 850;
-
-                }
-            }
-            repaint();
-        }
-        if (_down)
-        {
-            _moves = 1;
-            for (int r = _lengthOfSnek - 1; r >= 0; r--)
-            {
-                _snekXLen[r + 1] = _snekXLen[r];
-            }
-            for (int r = _lengthOfSnek; r >= 0; r--)
-            {
-                if (r == 0)
-                {
-                    _snekYLen[r] = _snekYLen[r] + 25;
-                }
-                else
-                {
-                    _snekYLen[r] = _snekYLen[r - 1];
-                }
-                if (_snekYLen[r] > 625)
-                {
-                    _snekYLen[r] = 75;
-
-                }
-            }
-            repaint();
-        }
-        if (_up)
-        {
-            _moves = 1;
-            for (int r = _lengthOfSnek - 1; r >= 0; r--)
-            {
-                _snekXLen[r + 1] = _snekXLen[r];
-            }
-            for (int r = _lengthOfSnek; r >= 0; r--)
-            {
-                if (r == 0)
-                {
-                    _snekYLen[r] = _snekYLen[r] - 25;
-                }
-                else
-                {
-                    _snekYLen[r] = _snekYLen[r - 1];
-                }
-                if (_snekYLen[r] < 75)
-                {
-                    _snekYLen[r] = 625;
-
-                }
-                repaint();
-            }
-
-        }
     }
 
     @Override
     public void keyTyped(KeyEvent e)
     {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-        {
-            _moves++;
-            if (!_left)
-            {
-                setFalse();
-                _right = true;
 
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
         {
-            _moves++;
-            if (!_right)
-            {
-                setFalse();
-                _left = true;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_UP)
-        {
-            _moves++;
-            if (!_down)
-            {
-                setFalse();
-                _up = true;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_DOWN)
-        {
-            _moves++;
-            if (!_up)
-            {
-                setFalse();
-                _down = true;
-            }
+            _gameover = false;
+            _score = 0;
+            _snake = new Snake();
+            repaint();
 
         }
+        if (!_gameover)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+            {
+                _snake.setMove(true);
+                _snake.setDirection(Direction.RIGHT);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_LEFT)
+            {
+                _snake.setMove(true);
+                _snake.setDirection(Direction.LEFT);
+            }
 
+            if (e.getKeyCode() == KeyEvent.VK_UP)
+            {
+                _snake.setMove(true);
+                _snake.setDirection(Direction.UP);
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                _snake.setMove(true);
+                _snake.setDirection(Direction.DOWN);
+            }
+        }
     }
 
     @Override
