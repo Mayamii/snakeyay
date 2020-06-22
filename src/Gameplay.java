@@ -34,13 +34,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private ImageIcon _titleImage;
 
+    private Position _startposition;
+
     public Gameplay()
     {
+        _startposition = new Position(4, 4);
         loadGraphics();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        _snake = new Snake();
+        _snake = new Snake(_startposition, _);
         _food = new Food(_foodImage);
         _timer = new Timer(_delay, this);
         _timer.start();

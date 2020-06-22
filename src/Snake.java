@@ -12,7 +12,7 @@ public class Snake implements Paintable
     public Snake(Position pos)
     {
         _direction = Direction.RIGHT;
-        _head = new Position(pos.getX(), pos.getY());
+        _head = new Head(pos, );
         _body = new LinkedList<>();
         _body.add(new Position(pos.getX() - 1, pos.getY()));
         _body.add(new Position(pos.getX() - 2, pos.getY()));
