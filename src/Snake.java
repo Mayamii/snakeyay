@@ -1,20 +1,21 @@
 import java.util.LinkedList;
 
-public class Snake
+public class Snake implements Paintable
 {
-    private Position _head;
     private LinkedList<Position> _body;
     private Direction _direction;
     private boolean _hasFood;
     private boolean _moving;
+    private Head _head;
+    private Tail _tail;
 
-    public Snake()
+    public Snake(Position pos)
     {
         _direction = Direction.RIGHT;
-        _head = new Position(4, 4);
+        _head = new Position(pos.getX(), pos.getY());
         _body = new LinkedList<>();
-        _body.add(new Position(3, 4));
-        _body.add(new Position(2, 4));
+        _body.add(new Position(pos.getX() - 1, pos.getY()));
+        _body.add(new Position(pos.getX() - 2, pos.getY()));
         _hasFood = false;
         _moving = false;
     }

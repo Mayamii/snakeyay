@@ -41,7 +41,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         _snake = new Snake();
-        _food = new Food();
+        _food = new Food(_foodImage);
         _timer = new Timer(_delay, this);
         _timer.start();
 
@@ -89,11 +89,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             _snake.eats();
             _score++;
-            _food = new Food();
+            _food = new Food(_foodImage);
 
         }
-        _foodImage.paintIcon(this, g, _food.getFoodX() * GRIDSIZE + OFFSETX,
-                _food.getFoodY() * GRIDSIZE + OFFSETY);
+        _foodImage.paintIcon(this, g, _food.getX() * GRIDSIZE + OFFSETX,
+                _food.getY() * GRIDSIZE + OFFSETY);
 
         //gameover
         for (int b = 1; b < _snake.getLength() - 1; b++)
@@ -119,16 +119,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.drawString("Press Space to restart", 350, 340);
     }
 
-    private boolean bitesOwnBody(int b)
+    private boolean bitesOwnBody(int bodymassindex)
     {
-        return _snake.getBodyX(b) == _snake.getHeadX()
-                && _snake.getBodyY(b) == _snake.getHeadY();
+        return _snake.getBodyX(bodymassindex) == _snake.getHeadX()
+                && _snake.getBodyY(bodymassindex) == _snake.getHeadY();
     }
 
     private boolean foundFood()
     {
-        return _food.getFoodX() == _snake.getHeadX()
-                && _food.getFoodY() == _snake.getHeadY();
+        return _food.getX() == _snake.getHeadX()
+                && _food.getY() == _snake.getHeadY();
     }
 
     private void paintSnake(Graphics g)

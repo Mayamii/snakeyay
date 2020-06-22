@@ -1,19 +1,18 @@
-public class Food
+import javax.swing.ImageIcon;
+
+public class Food extends AbstractPaintable
 {
-    private Position _pos;
 
-    public Food()
+    public Food(ImageIcon ima)
     {
-        _pos = Position.randomPos();
+        super(Position.randomPos(), ima);
+
     }
 
-    public int getFoodX()
+    @Override
+    public void update()
     {
-        return _pos.getX();
-    }
+        // TODO Auto-generated method stub
 
-    public int getFoodY()
-    {
-        return _pos.getY();
     }
 }
