@@ -6,60 +6,33 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
-    private static final int GRIDSIZE = 25;
-    private static final int OFFSETY = 75;
-    private static final int OFFSETX = 25;
 
     private Snake _snake;
 
     private int _score = 0;
     boolean _gameover = false;
-    private ImageIcon _rightMouth;
-    private ImageIcon _leftMouth;
-    private ImageIcon _upMouth;
-    private ImageIcon _downMouth;
     private Timer _timer;
     private int _delay = 100;
 
-    private ImageIcon _snakeImage;
-
-    private ImageIcon _foodImage;
     private Food _food;
-
-    private ImageIcon _titleImage;
 
     private Position _startposition;
 
     public Gameplay()
     {
         _startposition = new Position(4, 4);
-        loadGraphics();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        _snake = new Snake(_startposition, _);
-        _food = new Food(_foodImage);
+        _snake = new Snake(_startposition);
+        _food = new Food();
         _timer = new Timer(_delay, this);
         _timer.start();
-
-    }
-
-    private void loadGraphics()
-    {
-        _rightMouth = new ImageIcon("rightmouth.png");
-        _leftMouth = new ImageIcon("leftmouth.png");
-        _upMouth = new ImageIcon("upmouth.png");
-        _downMouth = new ImageIcon("downmouth.png");
-        _snakeImage = new ImageIcon("snakeimage.png");
-        _foodImage = new ImageIcon("enemy.png");
-        _titleImage = new ImageIcon("snaketitle.png");
-
     }
 
     public void paint(Graphics g)
@@ -69,7 +42,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
 
-        _titleImage.paintIcon(this, g, 25, 11);
+        ImageStore.getImage("title")
+            .paintIcon(this, g, 25, 11);
 
         g.setColor(Color.white);
         g.drawRect(24, 72, 851, 577);
@@ -86,40 +60,22 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("Length: " + _snake.getLength(), 780, 50);
 
-        paintSnake(g);
+        _snake.paint(g, this);
 
-        if (foundFood())
+        _food.paint(g, this);
+        if (_gameover)
         {
-            _snake.eats();
-            _score++;
-            _food = new Food(_foodImage);
+
+            g.setColor(Color.white);
+            g.setFont(new Font("arial", Font.BOLD, 50));
+            g.drawString("Game Over", 300, 300);
+
+            g.setFont(new Font("arial", Font.BOLD, 20));
+            g.drawString("Press Space to restart", 350, 340);
 
         }
-        _foodImage.paintIcon(this, g, _food.getX() * GRIDSIZE + OFFSETX,
-                _food.getY() * GRIDSIZE + OFFSETY);
 
-        //gameover
-        for (int b = 1; b < _snake.getLength() - 1; b++)
-        {
-            if (bitesOwnBody(b))
-            {
-                gameIsOver(g);
-            }
-        }
         g.dispose();
-    }
-
-    private void gameIsOver(Graphics g)
-    {
-        _snake.setMove(false);
-        _gameover = true;
-
-        g.setColor(Color.white);
-        g.setFont(new Font("arial", Font.BOLD, 50));
-        g.drawString("Game Over", 300, 300);
-
-        g.setFont(new Font("arial", Font.BOLD, 20));
-        g.drawString("Press Space to restart", 350, 340);
     }
 
     private boolean bitesOwnBody(int bodymassindex)
@@ -134,44 +90,34 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 && _food.getY() == _snake.getHeadY();
     }
 
-    private void paintSnake(Graphics g)
-    {
-        ImageIcon mouth = _rightMouth;
-        //Diese ifKlammer braucht man nicht, da es per Default auf rightmouth.png gesetzt ist, um Nullpointer zu verhindern
-        //        if (_snek.giveDirection() == Direction.RIGHT)
-        //        {
-        //            mouth = _rightMouth;
-        //
-        //        }
-        if (_snake.getDirection() == Direction.LEFT)
-        {
-            mouth = _leftMouth;
-        }
-        if (_snake.getDirection() == Direction.UP)
-        {
-            mouth = _upMouth;
-        }
-        if (_snake.getDirection() == Direction.DOWN)
-        {
-            mouth = _downMouth;
-        }
-        mouth.paintIcon(this, g, _snake.getHeadX() * GRIDSIZE + OFFSETX,
-                _snake.getHeadY() * GRIDSIZE + OFFSETY);
-        for (int a = 0; a < _snake.getLength() - 1; a++)
-        {
-            _snakeImage.paintIcon(this, g,
-                    _snake.getBodyX(a) * GRIDSIZE + OFFSETX,
-                    _snake.getBodyY(a) * GRIDSIZE + OFFSETY);
-        }
-
-    }
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
         _timer.start();
         _snake.move();
+        update();
         repaint();
+
+    }
+
+    private void update()
+    {
+        //gameover
+        if (foundFood())
+        {
+            _snake.eats();
+            _score++;
+            _food = new Food();
+
+        }
+        for (int b = 1; b < _snake.getLength() - 1; b++)
+        {
+            if (bitesOwnBody(b))
+            {
+                _snake.setMove(false);
+                _gameover = true;
+            }
+        }
 
     }
 
@@ -189,7 +135,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             _gameover = false;
             _score = 0;
-            _snake = new Snake();
+            _snake = new Snake(_startposition);
             repaint();
 
         }

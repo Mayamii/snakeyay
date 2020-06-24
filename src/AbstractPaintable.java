@@ -5,11 +5,11 @@ import javax.swing.ImageIcon;
 
 public abstract class AbstractPaintable implements Paintable
 {
-    private static final int GRIDSIZE = 25;
-    private static final int OFFSETY = 75;
-    private static final int OFFSETX = 25;
-    private Position _position;
-    private ImageIcon _image;
+    protected static final int GRIDSIZE = 25;
+    protected static final int OFFSETY = 75;
+    protected static final int OFFSETX = 25;
+    protected Position _position;
+    protected ImageIcon _image;
 
     protected AbstractPaintable(Position pos, ImageIcon ima)
     {

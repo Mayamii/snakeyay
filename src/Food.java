@@ -1,11 +1,9 @@
-import javax.swing.ImageIcon;
-
 public class Food extends AbstractPaintable
 {
 
-    public Food(ImageIcon ima)
+    public Food()
     {
-        super(Position.randomPos(), ima);
+        super(Position.randomPos(), ImageStore.getImage("food"));
 
     }
 
