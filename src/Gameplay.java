@@ -42,7 +42,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
 
-        ImageStore.getImage("title")
+        ImageStore.getImage(PictureName.TITLE)
             .paintIcon(this, g, 25, 11);
 
         g.setColor(Color.white);
@@ -94,7 +94,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         _timer.start();
-        _snake.move();
+
         update();
         repaint();
 
@@ -102,6 +102,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private void update()
     {
+        _snake.update();
         //gameover
         if (foundFood())
         {

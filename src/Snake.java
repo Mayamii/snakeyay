@@ -10,18 +10,13 @@ public class Snake implements Paintable
     public Snake(Position pos)
     {
         _head = new Head(pos);
-        _tail = new Tail(pos, ImageStore.getImage("snake"));
-
+        _tail = new Tail(pos, ImageStore.getImage(PictureName.SNAKEBODY));
         _moving = false;
     }
 
     public int getLength()
     {
         return _tail.getLength() + 1;
-    }
-
-    public void move()
-    {
     }
 
     public void eats()
@@ -54,9 +49,13 @@ public class Snake implements Paintable
     @Override
     public void update()
     {
-        _tail.setNextPosition(_head._position);
-        _tail.update();
-        _head.update();
+        if (_moving)
+        {
+            _tail.setNextPosition(_head._position);
+
+            _tail.update();
+            _head.update();
+        }
     }
 
     @Override

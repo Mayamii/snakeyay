@@ -3,7 +3,7 @@ public class Food extends AbstractPaintable
 
     public Food()
     {
-        super(Position.randomPos(), ImageStore.getImage("food"));
+        super(Position.randomPos(), ImageStore.getImage(PictureName.FOOD));
 
     }
 
