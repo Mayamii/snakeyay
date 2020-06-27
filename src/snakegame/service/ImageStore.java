@@ -1,6 +1,9 @@
+package snakegame.service;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+
+import snakegame.fachwert.enums.PictureName;
 
 public class ImageStore
 {
@@ -15,7 +18,7 @@ public class ImageStore
         _images.put(PictureName.HEADUP, new ImageIcon("upmouth.png"));
         _images.put(PictureName.HEADDOWN, new ImageIcon("downmouth.png"));
         _images.put(PictureName.SNAKEBODY, new ImageIcon("snakeimage.png"));
-        _images.put(PictureName.FOOD, new ImageIcon("enemy.png"));
+        _images.put(PictureName.NORMALFOOD, new ImageIcon("enemy.png"));
         _images.put(PictureName.TITLE, new ImageIcon("snaketitle.png"));
     }
 

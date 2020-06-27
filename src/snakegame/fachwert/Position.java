@@ -1,3 +1,4 @@
+package snakegame.fachwert;
 import java.util.Random;
 
 public final class Position

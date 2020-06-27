@@ -1,5 +1,0 @@
-
-public enum PictureName
-{
-    HEADLEFT, HEADRIGHT, HEADUP, HEADDOWN, TITLE, SNAKEBODY, FOOD
-}

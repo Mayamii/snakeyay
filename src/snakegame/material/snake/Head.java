@@ -1,5 +1,13 @@
+package snakegame.material.snake;
+
 import java.awt.Component;
 import java.awt.Graphics;
+
+import snakegame.fachwert.Position;
+import snakegame.fachwert.enums.Direction;
+import snakegame.fachwert.enums.PictureName;
+import snakegame.material.AbstractPaintable;
+import snakegame.service.ImageStore;
 
 public class Head extends AbstractPaintable
 {
