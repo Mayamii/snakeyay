@@ -26,6 +26,6 @@ public abstract class Food extends AbstractPaintable
     public Effect getEffect()
     {
         // TODO Auto-generated method stub
-        return null;
+        return _effect;
     }
 }

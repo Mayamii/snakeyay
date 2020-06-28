@@ -23,18 +23,18 @@ public abstract class AbstractPaintable implements Paintable
 
     public void paint(Graphics g, Component frame)
     {
-        _image.paintIcon(frame, g, getPosition().getX() * GRIDSIZE + OFFSETX,
-                getPosition().getY() * GRIDSIZE + OFFSETY);
+        _image.paintIcon(frame, g, getX() * GRIDSIZE + OFFSETX,
+                getY() * GRIDSIZE + OFFSETY);
     }
 
     public int getX()
     {
-        return getPosition().getX();
+        return _position.getX();
     }
 
     public int getY()
     {
-        return getPosition().getY();
+        return _position.getY();
     }
 
     abstract public void update();

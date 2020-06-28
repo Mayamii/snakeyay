@@ -46,7 +46,7 @@ public class Tail extends AbstractPaintable implements Paintable
         move();
         if (_growplease)
         {
-            for (int i = 0; i < _growLength; i++)
+            for (int i = _growLength; i <= 0; i--)
             {
                 grows();
             }

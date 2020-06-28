@@ -33,12 +33,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private Snake _snake;
 
     private CollisionManager _sebastian;
-    private int _score = 0;
     boolean _gameover = false;
     private Timer _timer;
     private int _delay = 100;
-
-    private Food _food;
 
     private Position _startposition;
 
@@ -49,8 +46,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         _snake = new Snake(_startposition);
-        _food = new Food();
-        _sebastian = new CollisionManager(_snake, _food);
+        _sebastian = new CollisionManager(_snake);
+        // _food = new Food();
+
         _timer = new Timer(_delay, this);
 
         _timer.start();
@@ -74,7 +72,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         //draw scores
         g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
-        g.drawString("Scores: " + _score, 780, 30);
+        g.drawString("Scores: " + _snake.getScore(), 780, 30);
 
         //length of snake
         g.setColor(Color.white);
@@ -83,7 +81,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         _snake.paint(g, this);
 
-        _food.paint(g, this);
+        for (int i = 0; i < _sebastian.getLengthList(); i++)
+        {
+            _sebastian.returnFood(i)
+                .paint(g, this);
+        }
         if (_gameover)
         {
 
@@ -99,18 +101,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.dispose();
     }
 
-    //    private boolean bitesOwnBody(int bodymassindex)
-    //    {
-    //        return _snake.getBodyX(bodymassindex) == _snake.getHeadX()
-    //                && _snake.getBodyY(bodymassindex) == _snake.getHeadY();
-    //    }
-    //
-    //    private boolean foundFood()
-    //    {
-    //        return _food.getX() == _snake.getHeadX()
-    //                && _food.getY() == _snake.getHeadY();
-    //    }
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -121,10 +111,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     }
 
+    private void checkState()
+    {
+
+    }
+
     private void update()
     {
         _snake.update();
         _sebastian.update();
+        if (_sebastian.getfoundFood())
+        {
+            Food food = _sebastian.returnSavedFood();
+            _snake.eats(food);
+            _sebastian.removeFoodfromList(food);
+            _sebastian.addRandomFood(_sebastian.returnSavedFood());
+            _sebastian.setfoundFood(false);
+
+        }
+        repaint();
         _gameover = _snake.isDead();
         //gameover
 
@@ -152,9 +157,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
         {
             _gameover = false;
-            _score = 0;
             _snake = new Snake(_startposition);
-            _food = new Food();
+            _sebastian = new CollisionManager(_snake);
             repaint();
 
         }

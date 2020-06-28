@@ -1,4 +1,5 @@
 package snakegame.service;
+
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -20,6 +21,13 @@ public class ImageStore
         _images.put(PictureName.SNAKEBODY, new ImageIcon("snakeimage.png"));
         _images.put(PictureName.NORMALFOOD, new ImageIcon("enemy.png"));
         _images.put(PictureName.TITLE, new ImageIcon("snaketitle.png"));
+        _images.put(PictureName.INVINCIBLEFOOD,
+                new ImageIcon("invinciblefood.png"));
+        _images.put(PictureName.INVERSEFOOD, new ImageIcon("inversefood.png"));
+        _images.put(PictureName.EWWFOOD, new ImageIcon("ewwfood.png"));
+        _images.put(PictureName.FASTFOOD, new ImageIcon("fastfood.png"));
+        _images.put(PictureName.SUPERFOOD, new ImageIcon("superfood.png"));
+        _images.put(PictureName.SLOWFOOD, new ImageIcon("slowfood.png"));
     }
 
     public static ImageIcon getImage(PictureName key)
