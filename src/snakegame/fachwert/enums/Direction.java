@@ -1,3 +1,4 @@
+package snakegame.fachwert.enums;
 
 public enum Direction
 {
