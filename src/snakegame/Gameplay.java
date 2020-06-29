@@ -19,8 +19,8 @@ import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.material.food.Food;
 import snakegame.material.snake.Snake;
-import snakegame.service.CollisionManager;
 import snakegame.service.ImageStore;
+import snakegame.service.ObjectManager;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
@@ -32,7 +32,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private Snake _snake;
 
-    private CollisionManager _sebastian;
+    private ObjectManager _sebastian;
     boolean _gameover = false;
     private Timer _timer;
     private int _delay = 100;
@@ -46,7 +46,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         _snake = new Snake(_startposition);
-        _sebastian = new CollisionManager(_snake);
+        _sebastian = new ObjectManager(_snake);
         // _food = new Food();
 
         _timer = new Timer(_delay, this);
@@ -158,7 +158,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             _gameover = false;
             _snake = new Snake(_startposition);
-            _sebastian = new CollisionManager(_snake);
+            _sebastian = new ObjectManager(_snake);
             repaint();
 
         }

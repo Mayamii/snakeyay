@@ -44,13 +44,12 @@ public class Tail extends AbstractPaintable implements Paintable
     {
         _lastPiece = _body.getLast();
         move();
-        if (_growplease)
+        if (_growLength > 0)
         {
-            for (int i = _growLength; i <= 0; i--)
-            {
-                grows();
-            }
-            _growplease = false;
+
+            grows();
+            _growLength--;
+
         }
     }
 
@@ -62,8 +61,8 @@ public class Tail extends AbstractPaintable implements Paintable
 
     public void growenable(int i)
     {
-        _growplease = true;
-        _growLength = i;
+
+        _growLength += i;
     }
 
     public void setNextPosition(Position position)

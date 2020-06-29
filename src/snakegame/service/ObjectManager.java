@@ -2,11 +2,9 @@ package snakegame.service;
 
 import java.util.ArrayList;
 
-import snakegame.material.food.BadFood;
 import snakegame.material.food.EwwFood;
 import snakegame.material.food.FastFood;
 import snakegame.material.food.Food;
-import snakegame.material.food.GoodFood;
 import snakegame.material.food.InverseFood;
 import snakegame.material.food.InvincibleFood;
 import snakegame.material.food.NormalFood;
@@ -14,7 +12,7 @@ import snakegame.material.food.SlowFood;
 import snakegame.material.food.SuperFood;
 import snakegame.material.snake.Snake;
 
-public class CollisionManager
+public class ObjectManager
 {
     private Snake _snake;
     ArrayList<Food> _foodlist;
@@ -24,12 +22,12 @@ public class CollisionManager
 
     //später noch andere foods und Labyrinth
 
-    public CollisionManager(Snake sneek)
+    public ObjectManager(Snake sneek)
     {
         _snake = sneek;
         _foodlist = new ArrayList<>();
-        addRandomFood();
-
+        addRandomBadFood();
+        addRandomGoodFood();
         _foodPosition = 0;
         _foundFood = false;
     }
@@ -41,72 +39,27 @@ public class CollisionManager
 
     public void addRandomFood(Food food)
     {
-        if (food instanceof GoodFood)
+        switch (food.getEffect())
         {
-            int i = randomInt();
-            //prozente für Foodwahrscheinlichkeit
-            // alle foods zusammen müssen 100 ergeben!!!
-            int normalfood = 60;
-            int superfood = 10;
-            int invinciblefood = 5;
-            int slowfood = 25;
+        case NORMAL:
+        case SUPER:
+        case SLOW:
+        case INVINCIBLE:
 
-            //hier werden die food ints in prozente umgewandelt
-            superfood = superfood + normalfood;
-            invinciblefood = invinciblefood + superfood;
-            slowfood = slowfood + invinciblefood;
+            addRandomGoodFood();
+            break;
 
-            if (i <= normalfood)
-            {
-                addFoodtoList(new NormalFood());
-
-            }
-            else if (normalfood < i && i <= superfood)
-            {
-                addFoodtoList(new SuperFood());
-            }
-            else if (superfood < i && i <= invinciblefood)
-            {
-                addFoodtoList(new InvincibleFood());
-            }
-            else if (invinciblefood < i && i <= slowfood)
-            {
-                addFoodtoList(new SlowFood());
-            }
-
-        }
-        else if (food instanceof BadFood)
-        {
-            int i = randomInt();
-            //prozente für Foodwahrscheinlichkeit
-            // alle foods zusammen müssen 100 ergeben!!!
-            int ewwfood = 40;
-            int fastfood = 40;
-            int inversefood = 20;
-
-            //hier werden die food ints in prozente umgewandelt
-            fastfood = fastfood + ewwfood;
-            inversefood = inversefood + fastfood;
-
-            if (i <= ewwfood)
-            {
-                addFoodtoList(new EwwFood());
-
-            }
-            else if (ewwfood < i && i <= fastfood)
-            {
-                addFoodtoList(new FastFood());
-            }
-            else if (fastfood < i && i <= inversefood)
-            {
-                addFoodtoList(new InverseFood());
-            }
+        case EWW:
+        case FAST:
+        case INVERSE:
+            addRandomBadFood();
+            break;
 
         }
 
     }
 
-    public void addRandomFood()
+    private void addRandomGoodFood()
     {
 
         int i = randomInt();
@@ -140,7 +93,11 @@ public class CollisionManager
             addFoodtoList(new SlowFood());
         }
 
-        i = randomInt();
+    }
+
+    private void addRandomBadFood()
+    {
+        int i = randomInt();
         //prozente für Foodwahrscheinlichkeit
         // alle foods zusammen müssen 100 ergeben!!!
         int ewwfood = 40;
