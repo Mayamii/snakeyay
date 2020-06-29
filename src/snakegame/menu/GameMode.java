@@ -5,5 +5,5 @@ public enum GameMode {
 	LABYRINTH,
 	COOKIE,
 	HIGHSCORE,
-	ERROR
+	ERROR,
 }
