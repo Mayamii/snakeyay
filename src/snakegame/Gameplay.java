@@ -1,6 +1,7 @@
 package snakegame;
 
 import java.awt.Color;
+import snakegame.material.snake.Snake;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;

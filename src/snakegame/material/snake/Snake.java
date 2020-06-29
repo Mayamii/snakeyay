@@ -182,6 +182,11 @@ public class Snake implements Paintable
             _state = State.ALIVE;
         }
     }
+    
+    public int getScore() {
+    	return _score;
+    }
+   
 
     @Override
     public int getX()
