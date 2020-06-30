@@ -32,6 +32,10 @@ public class MenuItem {
 		return _menuText;
 	}
 	
+	public void setSelected(boolean b) {
+		_selected = b;
+	}
+	
 	public boolean getSelected() {
 		return _selected;
 	}

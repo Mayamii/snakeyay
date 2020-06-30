@@ -214,6 +214,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         	if (e.getKeyCode() == KeyEvent.VK_DOWN) 
         	{
         	_index = (_index+1) % _maxAnzahl;
+        	_resume.setSelected(true);
+        	_hauptmenu.getMenuItem(_index);
         	repaint();
         	}
         	
