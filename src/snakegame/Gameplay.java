@@ -43,8 +43,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 	private Color _color;
 	private int _index;
 	private MenuItem _resume;
+	private MenuItem _start;
+	private MenuItem _highscore;
+	private MenuItem _sound;
+	private MenuItem _music;
+	private MenuItem _close;
 	private final int _maxAnzahl = 6;
 	private GameMenu _hauptmenu;
+	
 
     public Gameplay()
     {
@@ -56,6 +62,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _menu = true;
         _hauptmenu = new GameMenu(new Position (5, 5), new Position (20, 20));
         _resume = new MenuItem("Resume", new Position(17, 10));
+        _start = new MenuItem("Start Game", new Position(17, 10));
+        _highscore = new MenuItem("Highscore", new Position(19, 12));
+        _sound = new MenuItem("Sound", new Position(21, 14));
+        _music = new MenuItem("Music", new Position(23, 16));
+        _close = new MenuItem("Close", new Position(23, 16));
+        
+        
         _hauptmenu.add(_resume);
         _snake = new Snake(_startposition);
         _sebastian = new CollisionManager(_snake);
