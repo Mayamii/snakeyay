@@ -12,6 +12,8 @@ public class GameMenu {
 	private Color _color;
 	private Position _linksOben;
 	private Position _rechtsUnten;
+	private int _anzahlMenuItems;
+	private int _hilfsi;
 	List<MenuItem> _menuItems = new ArrayList<MenuItem>();
 	
 	
@@ -38,20 +40,26 @@ public class GameMenu {
 		}
 	}
 	
-		public MenuItem getMenuItem(int i) {
-			return _menuItems.get(i);
+		public MenuItem getSelectedItem(int i) {
+			_anzahlMenuItems = _menuItems.size();
+			_hilfsi = ((i)% _anzahlMenuItems);
+			return _menuItems.get(_hilfsi);
 		}
 	
-//		private selectNext() {
-//			if ()
-//		}
-//		
-//		
-//		private selectPrevious() {
-//			
-//		}
-//	
-//	
+		public MenuItem selectNext(int i) {
+			_anzahlMenuItems = _menuItems.size();
+			_hilfsi = ((i+1)%_anzahlMenuItems);
+			return _menuItems.get(_hilfsi);
+		}
+		
+		
+		public MenuItem selectPrevious(int i) {
+			_anzahlMenuItems = _menuItems.size();
+			_hilfsi = ((i + _anzahlMenuItems -1)%_anzahlMenuItems);
+			return _menuItems.get(_hilfsi);
+		}
+	
+	
 
 
 	}
