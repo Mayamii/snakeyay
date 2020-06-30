@@ -61,15 +61,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _color = Color.white;
         _menu = true;
         _hauptmenu = new GameMenu(new Position (5, 5), new Position (20, 20));
-        _resume = new MenuItem("Resume", new Position(17, 10));
-        _start = new MenuItem("Start Game", new Position(17, 10));
-        _highscore = new MenuItem("Highscore", new Position(19, 12));
-        _sound = new MenuItem("Sound", new Position(21, 14));
-        _music = new MenuItem("Music", new Position(23, 16));
-        _close = new MenuItem("Close", new Position(23, 16));
+        _resume = new MenuItem("Resume", new Position(400, 150));
+        _start = new MenuItem("Start Game", new Position(400, 225));
+        _highscore = new MenuItem("Highscore", new Position(400, 300));
+        _sound = new MenuItem("Sound", new Position(400, 375));
+        _music = new MenuItem("Music", new Position(400, 450));
+        _close = new MenuItem("Close", new Position(400, 525));
         
         
         _hauptmenu.add(_resume);
+        _hauptmenu.add(_start);
+        _hauptmenu.add(_highscore);
+        _hauptmenu.add(_sound);
+        _hauptmenu.add(_music);
+        _hauptmenu.add(_close);
+        
         _snake = new Snake(_startposition);
         _sebastian = new CollisionManager(_snake);
         // _food = new Food();
@@ -126,12 +132,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (_menu)
         {
         _hauptmenu.paint(g);
-
-        g.drawString("Start Game", 200, 200);
-        g.drawString("Highscore", 200, 250);
-        g.drawString("Sound", 200, 300);
-        g.drawString("Music", 200, 350);
-        g.drawString("Close", 200, 400);
         }
 
         if (_gameover)
@@ -213,7 +213,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
         	if (e.getKeyCode() == KeyEvent.VK_DOWN) 
         	{
-        	//ToDO_hauptmenu
         	_index = (_index+1) % _maxAnzahl;
         	repaint();
         	}

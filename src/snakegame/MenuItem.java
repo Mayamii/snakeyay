@@ -28,5 +28,12 @@ public class MenuItem {
 		
 	}
 	
+	public String getText() {
+		return _menuText;
+	}
+	
+	public boolean getSelected() {
+		return _selected;
+	}
 }
 

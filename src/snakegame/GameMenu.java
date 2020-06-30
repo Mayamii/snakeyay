@@ -14,6 +14,7 @@ public class GameMenu {
 	private Position _rechtsUnten;
 	List<MenuItem> _menuItems = new ArrayList<MenuItem>();
 	
+	
 	public GameMenu(Position linksOben, Position rechtsUnten)
 	{
 		_linksOben = linksOben;
@@ -35,6 +36,23 @@ public class GameMenu {
 		for (MenuItem menuItem : _menuItems) {
 			menuItem.paint(g);
 		}
-		
 	}
-}
+	
+		public MenuItem getMenuItem(int i) {
+			return _menuItems.get(i);
+		}
+	
+//		private selectNext() {
+//			if ()
+//		}
+//		
+//		
+//		private selectPrevious() {
+//			
+//		}
+//	
+//	
+
+
+	}
+
