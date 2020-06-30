@@ -17,7 +17,7 @@ import javax.swing.Timer;
 import snakegame.fachwert.Position;
 import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.PictureName;
-import snakegame.material.food.Food;
+import snakegame.fachwert.enums.State;
 import snakegame.material.snake.Snake;
 import snakegame.service.ImageStore;
 import snakegame.service.ObjectManager;
@@ -118,29 +118,32 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private void update()
     {
+        System.out.println(_delay);
         _snake.update();
         _sebastian.update();
-        if (_sebastian.getfoundFood())
-        {
-            Food food = _sebastian.returnSavedFood();
-            _snake.eats(food);
-            _sebastian.removeFoodfromList(food);
-            _sebastian.addRandomFood(_sebastian.returnSavedFood());
-            _sebastian.setfoundFood(false);
+        updateDelay();
 
-        }
         repaint();
         _gameover = _snake.isDead();
         //gameover
 
-        for (int b = 1; b < _snake.getLength() - 1; b++)
+    }
+
+    private void updateDelay()
+    {
+        if (_snake.getState() == State.SLOW)
         {
-            if (_sebastian.bitesOwnBody())
-            {
-                _snake.setMove(false);
-                _gameover = true;
-            }
+            _delay = 170;
         }
+        else if (_snake.getState() == State.FAST)
+        {
+            _delay = 50;
+        }
+        else
+        {
+            _delay = 100;
+        }
+        _timer.setDelay(_delay);
 
     }
 
@@ -154,15 +157,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void keyPressed(KeyEvent e)
     {
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
+        if (e.getKeyCode() == KeyEvent.VK_SPACE
+                && _snake.getSnakeState() == State.DEAD)
         {
-            _gameover = false;
             _snake = new Snake(_startposition);
             _sebastian = new ObjectManager(_snake);
             repaint();
 
         }
-        if (!_gameover)
+        if (_snake.getSnakeState() != State.DEAD)
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
@@ -188,7 +191,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             }
 
         }
+
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+
         {
             Container p = this.getTopLevelAncestor();
             p.dispatchEvent(

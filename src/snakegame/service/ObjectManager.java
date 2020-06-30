@@ -2,6 +2,7 @@ package snakegame.service;
 
 import java.util.ArrayList;
 
+import snakegame.fachwert.enums.State;
 import snakegame.material.food.EwwFood;
 import snakegame.material.food.FastFood;
 import snakegame.material.food.Food;
@@ -16,9 +17,6 @@ public class ObjectManager
 {
     private Snake _snake;
     ArrayList<Food> _foodlist;
-    private int _foodPosition;
-    private boolean _foundFood;
-    private Food _food;
 
     //später noch andere foods und Labyrinth
 
@@ -28,8 +26,6 @@ public class ObjectManager
         _foodlist = new ArrayList<>();
         addRandomBadFood();
         addRandomGoodFood();
-        _foodPosition = 0;
-        _foundFood = false;
     }
 
     private int randomInt()
@@ -136,6 +132,7 @@ public class ObjectManager
 
     public boolean bitesOwnBody()
     {
+
         for (int i = 0; i < _snake.getLength() - 1; i++)
         {
             if (_snake.getBodyX(i) == _snake.getHeadX()
@@ -144,12 +141,8 @@ public class ObjectManager
                 return true;
             }
         }
-        return false;
-    }
 
-    public Food returnSavedFood()
-    {
-        return _food;
+        return false;
     }
 
     public Food returnFood(int i)
@@ -174,22 +167,13 @@ public class ObjectManager
             if (food.getX() == _snake.getHeadX()
                     && food.getY() == _snake.getHeadY())
             {
-                _foodPosition = _foodlist.indexOf(food);
-                _food = food;
-                _foundFood = true;
+                _snake.eats(food);
+                removeFoodfromList(food);
+                addRandomFood(food);
+
                 return;
             }
         }
-    }
-
-    public void setfoundFood(boolean b)
-    {
-        _foundFood = b;
-    }
-
-    public boolean getfoundFood()
-    {
-        return _foundFood;
     }
 
     public boolean hitsLabyrinth()
@@ -199,17 +183,13 @@ public class ObjectManager
 
     public void update()
     {
-        if (bitesOwnBody() || hitsLabyrinth())
+        if ((bitesOwnBody() || hitsLabyrinth())
+                && _snake.getState() != State.INVINCIBLE)
         {
             _snake.dies();
         }
         checkFoodCollision();
 
-    }
-
-    public int getFoodPosition()
-    {
-        return _foodPosition;
     }
 
 }
