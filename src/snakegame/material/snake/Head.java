@@ -13,35 +13,44 @@ public class Head extends AbstractPaintable
 {
 
     private Direction _direction;
+    private boolean _godmode;
 
     protected Head(Position pos)
     {
         super(pos, ImageStore.getImage(PictureName.HEADRIGHT));
         _direction = Direction.RIGHT;
+        _godmode = false;
+    }
+
+    public void setGod(boolean godmode)
+    {
+        _godmode = godmode;
     }
 
     public void paint(Graphics g, Component frame)
     {
-        _image = ImageStore.getImage(PictureName.HEADRIGHT);
-        //Diese ifKlammer braucht man nicht, da es per Default auf rightmouth.png gesetzt ist, um Nullpointer zu verhindern
-        //        if (_snek.giveDirection() == Direction.RIGHT)
-        //        {
-        //            mouth = _rightMouth;
-        //
-        //        }
+
+        _image = _godmode ? ImageStore.getImage(PictureName.WOWRIGHT)
+                : ImageStore.getImage(PictureName.HEADRIGHT);
+
         if (_direction == Direction.LEFT)
         {
-            _image = ImageStore.getImage(PictureName.HEADLEFT);
+
+            _image = _godmode ? ImageStore.getImage(PictureName.WOWLEFT)
+                    : ImageStore.getImage(PictureName.HEADLEFT);
         }
         if (_direction == Direction.UP)
         {
-            _image = ImageStore.getImage(PictureName.HEADUP);
+            _image = _godmode ? ImageStore.getImage(PictureName.WOWUP)
+                    : ImageStore.getImage(PictureName.HEADUP);
         }
         if (_direction == Direction.DOWN)
         {
-            _image = ImageStore.getImage(PictureName.HEADDOWN);
+            _image = _godmode ? ImageStore.getImage(PictureName.WOWDOWN)
+                    : ImageStore.getImage(PictureName.HEADDOWN);
         }
         super.paint(g, frame);
+
     }
 
     public void move()

@@ -111,20 +111,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     }
 
-    private void checkState()
-    {
-
-    }
-
     private void update()
     {
-        System.out.println(_delay);
+        System.out.println(_snake.getState());
         _snake.update();
         _sebastian.update();
         updateDelay();
 
         repaint();
-        _gameover = _snake.isDead();
+        _gameover = _snake.getState() == State.DEAD;
         //gameover
 
     }

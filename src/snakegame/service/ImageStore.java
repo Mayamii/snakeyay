@@ -28,6 +28,17 @@ public class ImageStore
         _images.put(PictureName.FASTFOOD, new ImageIcon("fastfood.png"));
         _images.put(PictureName.SUPERFOOD, new ImageIcon("superfood.png"));
         _images.put(PictureName.SLOWFOOD, new ImageIcon("slowfood.png"));
+        _images.put(PictureName.RED, new ImageIcon("1.png"));
+        _images.put(PictureName.ORANGE, new ImageIcon("2.png"));
+        _images.put(PictureName.YELLOW, new ImageIcon("3.png"));
+        _images.put(PictureName.BLUE, new ImageIcon("5.png"));
+        _images.put(PictureName.INDIGO, new ImageIcon("6.png"));
+        _images.put(PictureName.PURPLE, new ImageIcon("7.png"));
+        _images.put(PictureName.PINK, new ImageIcon("8.png"));
+        _images.put(PictureName.WOWUP, new ImageIcon("wowupmouth.png"));
+        _images.put(PictureName.WOWRIGHT, new ImageIcon("wowrightmouth.png"));
+        _images.put(PictureName.WOWDOWN, new ImageIcon("wowdownmouth.png"));
+        _images.put(PictureName.WOWLEFT, new ImageIcon("wowleftmouth.png"));
     }
 
     public static ImageIcon getImage(PictureName key)
