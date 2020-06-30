@@ -15,10 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import snakegame.fachwert.Position;
+import snakegame.fachwert.enums.AudioName;
 import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.fachwert.enums.State;
 import snakegame.material.snake.Snake;
+import snakegame.service.AudioStore;
 import snakegame.service.ImageStore;
 import snakegame.service.ObjectManager;
 
@@ -50,7 +52,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         // _food = new Food();
 
         _timer = new Timer(_delay, this);
-
+        AudioStore.playAudio(AudioStore.getSound(AudioName.GOURMETRACE));
         _timer.start();
     }
 

@@ -2,6 +2,7 @@ package snakegame.service;
 
 import java.util.ArrayList;
 
+import snakegame.fachwert.enums.AudioName;
 import snakegame.fachwert.enums.State;
 import snakegame.material.food.EwwFood;
 import snakegame.material.food.FastFood;
@@ -170,6 +171,7 @@ public class ObjectManager
                 _snake.eats(food);
                 removeFoodfromList(food);
                 addRandomFood(food);
+                AudioStore.playAudio(AudioStore.getSound(AudioName.EAT));
 
                 return;
             }
