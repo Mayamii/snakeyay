@@ -39,12 +39,24 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private Position _startposition;
 
+	private boolean _menu ;
+	private Color _color;
+	private int _index;
+	private MenuItem _resume;
+	private final int _maxAnzahl = 6;
+	private GameMenu _hauptmenu;
+
     public Gameplay()
     {
         _startposition = new Position(4, 4);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        _color = Color.white;
+        _menu = true;
+        _hauptmenu = new GameMenu(new Position (5, 5), new Position (20, 20));
+        _resume = new MenuItem("Resume", new Position(17, 10));
+        _hauptmenu.add(_resume);
         _snake = new Snake(_startposition);
         _sebastian = new CollisionManager(_snake);
         // _food = new Food();
@@ -52,7 +64,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _timer = new Timer(_delay, this);
 
         _timer.start();
+        
     }
+    
+
 
     public void paint(Graphics g)
     {
@@ -66,8 +81,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         g.setColor(Color.white);
         g.drawRect(24, 72, 851, 577);
+        
+
         g.setColor(Color.black);
         g.fillRect(25, 75, 850, 575);
+        
+
 
         //draw scores
         g.setColor(Color.white);
@@ -78,14 +97,30 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("Length: " + _snake.getLength(), 780, 50);
+        
 
         _snake.paint(g, this);
+        
+
 
         for (int i = 0; i < _sebastian.getLengthList(); i++)
         {
             _sebastian.returnFood(i)
                 .paint(g, this);
         }
+        
+        //Menu zeichnen
+        if (_menu)
+        {
+        _hauptmenu.paint(g);
+
+        g.drawString("Start Game", 200, 200);
+        g.drawString("Highscore", 200, 250);
+        g.drawString("Sound", 200, 300);
+        g.drawString("Music", 200, 350);
+        g.drawString("Close", 200, 400);
+        }
+
         if (_gameover)
         {
 
@@ -95,12 +130,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             g.setFont(new Font("arial", Font.BOLD, 20));
             g.drawString("Press Space to restart", 350, 340);
-
+            
         }
 
         g.dispose();
     }
 
+
+    
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -153,8 +190,31 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyPressed(KeyEvent e)
     {
+    	if (e.getKeyCode() == KeyEvent.VK_M)
+    	{
+    		_menu = !_menu;
+    	}
+    	
+    	
+        if (_menu) 
+        {
+        	if (e.getKeyCode() == KeyEvent.VK_DOWN) 
+        	{
+        	//ToDO_hauptmenu
+        	_index = (_index+1) % _maxAnzahl;
+        	repaint();
+        	}
+        	
+        	if (e.getKeyCode() == KeyEvent.VK_UP) 
+        	{
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
+        	_index = (_index+_maxAnzahl-1) % _maxAnzahl;
+        	repaint();
+        	}
+        }
+        	
+        	
+       if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
         {
             _gameover = false;
             _snake = new Snake(_startposition);
