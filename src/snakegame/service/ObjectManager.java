@@ -62,9 +62,9 @@ public class ObjectManager
         int i = randomInt();
         //prozente für Foodwahrscheinlichkeit
         // alle foods zusammen müssen 100 ergeben!!!
-        int normalfood = 60;
+        int normalfood = 50;
         int superfood = 10;
-        int invinciblefood = 5;
+        int invinciblefood = 15;
         int slowfood = 25;
 
         //hier werden die food ints in prozente umgewandelt

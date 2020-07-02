@@ -115,7 +115,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private void update()
     {
-        System.out.println(_snake.getState());
         _snake.update();
         _sebastian.update();
         updateDelay();
@@ -132,7 +131,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             _delay = 170;
         }
-        else if (_snake.getState() == State.FAST)
+        else if (_snake.getState() == State.FAST
+                || _snake.getState() == State.INVINCIBLE)
         {
             _delay = 50;
         }
