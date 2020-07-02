@@ -4,7 +4,7 @@ import snakegame.fachwert.enums.Effect;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.service.ImageStore;
 
-public class SuperFood extends GoodFood
+public class SuperFood extends Food
 {
     public SuperFood()
     {

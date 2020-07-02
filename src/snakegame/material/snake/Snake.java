@@ -54,7 +54,7 @@ public class Snake implements Paintable
                 _score++;
                 _tail.growenable(1);
                 _state = State.INVERTED;
-                _updateCounter = 10;
+                _updateCounter = 30;
                 break;
             case SUPER:
                 _score += 3;
@@ -64,20 +64,20 @@ public class Snake implements Paintable
                 _score += 3;
                 _tail.growenable(1);
                 _state = State.INVINCIBLE;
-                _updateCounter = 30;
+                _updateCounter = 50;
                 break;
             case SLOW:
                 _score++;
                 _tail.growenable(1);
                 _state = State.SLOW;
-                _updateCounter = 10;
+                _updateCounter = 20;
 
                 break;
             case FAST:
                 _score++;
-                _tail.growenable(1);
+                _tail.growenable(3);
                 _state = State.FAST;
-                _updateCounter = 10;
+                _updateCounter = 60;
 
                 break;
             case EWW:
@@ -115,7 +115,7 @@ public class Snake implements Paintable
                 break;
             case FAST:
                 _score++;
-                _tail.growenable(1);
+                _tail.growenable(3);
 
                 break;
             case EWW:
@@ -163,9 +163,16 @@ public class Snake implements Paintable
         _tail.paint(g, frame);
     }
 
+    public State getSnakeState()
+    {
+        return _state;
+    }
+
     @Override
     public void update()
     {
+        _head.setGod(_state == State.INVINCIBLE);
+        _tail.setGod(_state == State.INVINCIBLE);
         if (_moving)
         {
             _tail.setNextPosition(_head.getPosition());
@@ -186,17 +193,21 @@ public class Snake implements Paintable
     @Override
     public int getX()
     {
-        return 0;
+        return getHeadX();
     }
 
     @Override
     public int getY()
     {
-        return 0;
+        return getHeadY();
     }
 
     public void setDirection(Direction dir)
     {
+        if (_state == State.INVERTED)
+        {
+            dir = dir.inverse();
+        }
         _head.setDirection(dir);
 
     }
@@ -215,13 +226,23 @@ public class Snake implements Paintable
 
     public void dies()
     {
+        _state = State.DEAD;
         _moving = false;
-        _dead = true;
     }
 
-    public boolean isDead()
+    public int getScore()
     {
-        return _dead;
+        return _score;
+    }
+
+    public void setState(State state)
+    {//
+        _state = state;
+    }
+
+    public State getState()
+    {
+        return _state;
     }
 
 }
