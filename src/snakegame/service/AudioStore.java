@@ -16,7 +16,7 @@ public class AudioStore
     static
     {
         _audios = new HashMap<>();
-        _audios.put(AudioName.GOURMETRACE, new File("gourmet.mp3"));
+        _audios.put(AudioName.GOURMETRACE, new File("gourmet.wav"));
         _audios.put(AudioName.EAT, new File("smb_warning.wav"));
 
     }
