@@ -7,60 +7,82 @@ import java.util.List;
 
 import snakegame.fachwert.Position;
 
-public class GameMenu {
+public class GameMenu
+{
 
-	private Color _color;
-	private Position _linksOben;
-	private Position _rechtsUnten;
-	private int _anzahlMenuItems;
-	private int _hilfsi;
-	List<MenuItem> _menuItems = new ArrayList<MenuItem>();
-	
-	
-	public GameMenu(Position linksOben, Position rechtsUnten)
-	{
-		_linksOben = linksOben;
-		_rechtsUnten = rechtsUnten;
-		_color = Color.GREEN;
-		
-	}
+    private Color _color;
+    private Position _linksOben;
+    private Position _rechtsUnten;
+    List<MenuItem> _menuItems = new ArrayList<MenuItem>();
 
-	public void add(MenuItem newItem) {
-		_menuItems.add(newItem);
-		
-	}
+    public GameMenu(Position linksOben, Position rechtsUnten)
+    {
+        _linksOben = linksOben;
+        _rechtsUnten = rechtsUnten;
+        _color = Color.GREEN;
 
-	public void paint(Graphics g) {
+    }
+
+    public void add(MenuItem newItem)
+    {
+        if (_menuItems.isEmpty())
+        {
+            newItem.setSelected(true);
+        }
+        _menuItems.add(newItem);
+
+    }
+
+    public void paint(Graphics g)
+    {
         g.setColor(Color.green);
-        //TO DO Werte Checken
-        g.drawRect(64, 72, 751, 577);
-        g.fillRect(64, 72, 751, 577);
-		for (MenuItem menuItem : _menuItems) {
-			menuItem.paint(g);
-		}
-	}
-	
-		public MenuItem getSelectedItem(int i) {
-			_anzahlMenuItems = _menuItems.size();
-			_hilfsi = ((i)% _anzahlMenuItems);
-			return _menuItems.get(_hilfsi);
-		}
-	
-		public MenuItem selectNext(int i) {
-			_anzahlMenuItems = _menuItems.size();
-			_hilfsi = ((i+1)%_anzahlMenuItems);
-			return _menuItems.get(_hilfsi);
-		}
-		
-		
-		public MenuItem selectPrevious(int i) {
-			_anzahlMenuItems = _menuItems.size();
-			_hilfsi = ((i + _anzahlMenuItems -1)%_anzahlMenuItems);
-			return _menuItems.get(_hilfsi);
-		}
-	
-	
+        //TO DO Werte Checken --> Positon wird nicht genutzt
+        // width: multiple of 34 (34*23=782)
+        //heigth; multiple of 23 (23*25 = 575)
+        g.drawRect(64, 75, 782, 575);
+        g.fillRect(64, 75, 782, 575);
+        for (MenuItem menuItem : _menuItems)
+        {
+            menuItem.paint(g);
+        }
+    }
 
+    public MenuItem getSelectedItem()
+    {
+        for (MenuItem menuItem : _menuItems)
+        {
+            if (menuItem.getSelected())
+            {
+                return menuItem;
+            }
+        }
+        //wird niemals auftreten, weil wir immer mindestens ein Item hinzugefügen
+        return null;
+    }
 
-	}
+    public void selectNext()
+    {
+        MenuItem aktuellesMenuItem;
+        aktuellesMenuItem = getSelectedItem();
+        int index = _menuItems.indexOf(aktuellesMenuItem);
+        index = (index + 1) % _menuItems.size();
+        MenuItem naechstesMenuItem;
+        naechstesMenuItem = _menuItems.get(index);
+        naechstesMenuItem.setSelected(true);
+        aktuellesMenuItem.setSelected(false);
+    }
 
+    public void selectPrevious()
+    {
+        MenuItem aktuellesMenuItem;
+        aktuellesMenuItem = getSelectedItem();
+        int index = _menuItems.indexOf(aktuellesMenuItem);
+        index = (index + _menuItems.size() - 1) % _menuItems.size();
+        MenuItem vorherigesMenuItem;
+        vorherigesMenuItem = _menuItems.get(index);
+        vorherigesMenuItem.setSelected(true);
+        aktuellesMenuItem.setSelected(false);
+
+    }
+
+}

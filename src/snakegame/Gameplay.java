@@ -39,18 +39,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private Position _startposition;
 
-	private boolean _menu ;
-	private Color _color;
-	private int _index;
-	private MenuItem _resume;
-	private MenuItem _start;
-	private MenuItem _highscore;
-	private MenuItem _sound;
-	private MenuItem _music;
-	private MenuItem _close;
-	private final int _maxAnzahl = 6;
-	private GameMenu _hauptmenu;
-	
+    private boolean _menu;
+    private int _index;
+    private MenuItem _start;
+    private MenuItem _highscore;
+    private MenuItem _sound;
+    private MenuItem _music;
+    private MenuItem _close;
+    private GameMenu _hauptmenu;
 
     public Gameplay()
     {
@@ -58,24 +54,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        _color = Color.white;
         _menu = true;
-        _hauptmenu = new GameMenu(new Position (5, 5), new Position (20, 20));
-        _resume = new MenuItem("Resume", new Position(400, 150));
+        _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
         _start = new MenuItem("Start Game", new Position(400, 225));
         _highscore = new MenuItem("Highscore", new Position(400, 300));
         _sound = new MenuItem("Sound", new Position(400, 375));
         _music = new MenuItem("Music", new Position(400, 450));
         _close = new MenuItem("Close", new Position(400, 525));
-        
-        
-        _hauptmenu.add(_resume);
+        _hauptmenu.add(new MenuItem("Resume", new Position(400, 150)));
         _hauptmenu.add(_start);
         _hauptmenu.add(_highscore);
         _hauptmenu.add(_sound);
         _hauptmenu.add(_music);
         _hauptmenu.add(_close);
-        
+
         _snake = new Snake(_startposition);
         _sebastian = new CollisionManager(_snake);
         // _food = new Food();
@@ -83,14 +75,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _timer = new Timer(_delay, this);
 
         _timer.start();
-        
-    }
-    
 
+    }
 
     public void paint(Graphics g)
     {
-
         // draw title image border
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
@@ -100,12 +89,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         g.setColor(Color.white);
         g.drawRect(24, 72, 851, 577);
-        
 
         g.setColor(Color.black);
         g.fillRect(25, 75, 850, 575);
-        
-
 
         //draw scores
         g.setColor(Color.white);
@@ -116,22 +102,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("Length: " + _snake.getLength(), 780, 50);
-        
 
         _snake.paint(g, this);
-        
-
 
         for (int i = 0; i < _sebastian.getLengthList(); i++)
         {
             _sebastian.returnFood(i)
                 .paint(g, this);
         }
-        
+
         //Menu zeichnen
         if (_menu)
         {
-        _hauptmenu.paint(g);
+            _hauptmenu.paint(g);
         }
 
         if (_gameover)
@@ -143,14 +126,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             g.setFont(new Font("arial", Font.BOLD, 20));
             g.drawString("Press Space to restart", 350, 340);
-            
+
         }
 
         g.dispose();
     }
 
-
-    
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -203,34 +184,33 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-    	if (e.getKeyCode() == KeyEvent.VK_M)
-    	{
-    		_menu = !_menu;
-    	}
-    	
-    	
-        if (_menu) 
+        if (e.getKeyCode() == KeyEvent.VK_M)
         {
-        	if (e.getKeyCode() == KeyEvent.VK_DOWN) 
-        	{
-        	_index = (_index+1) % _maxAnzahl;
-        	_hauptmenu.selectNext(_index).setSelected(true);
-        	_hauptmenu.getSelectedItem(_index).setSelected(false);;
-        	repaint();
-        	}
-        	
-        	if (e.getKeyCode() == KeyEvent.VK_UP) 
-        	{
-
-        	_index = (_index + _maxAnzahl -1) % _maxAnzahl;
-        	_hauptmenu.selectPrevious(_index).setSelected(true);
-        	_hauptmenu.getSelectedItem(_index).setSelected(false);;
-        	repaint();
-        	}
+            _menu = !_menu;
+            _index = 0;
         }
-        	
-        	
-       if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
+
+        if (_menu)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                _hauptmenu.selectNext();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_UP)
+            {
+                _hauptmenu.selectPrevious();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                _hauptmenu.getSelectedItem();
+            }
+
+            repaint();
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
         {
             _gameover = false;
             _snake = new Snake(_startposition);
