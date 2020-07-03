@@ -36,9 +36,7 @@ public class GameMenu
     public void paint(Graphics g)
     {
         g.setColor(Color.green);
-        //TO DO Werte Checken --> Positon wird nicht genutzt
-        // width: multiple of 34 (34*10=782)
-        //heigth; multiple of 23 (23*14 = 575)
+        //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 für den linken Rand und 850-200 für die rechte Begrenzung
         g.drawRect(225, 75, 450, 575);
         g.fillRect(225, 75, 450, 575);
         for (MenuItem menuItem : _menuItems)

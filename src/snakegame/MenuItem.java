@@ -1,6 +1,7 @@
 package snakegame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import snakegame.fachwert.Position;
@@ -11,7 +12,7 @@ public class MenuItem
     private String _menuText;
     private boolean _selected;
     private Position _menuPosition;
-    protected static final int GRIDSIZE = 25;
+    protected static final int GRIDSIZE = 5;
     protected static final int OFFSETY = 75;
     protected static final int OFFSETX = 25;
 
@@ -25,6 +26,8 @@ public class MenuItem
     public void paint(Graphics g)
     {
         g.setColor(Color.WHITE);
+        //hier kann man das Layout der Schrift des Menus
+        g.setFont(new Font("arial", Font.BOLD, 30));
         if (_selected)
         {
             g.setColor(Color.RED);

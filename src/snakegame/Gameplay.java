@@ -41,11 +41,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private boolean _menu;
     private int _index;
-    private MenuItem _start;
-    private MenuItem _highscore;
-    private MenuItem _sound;
-    private MenuItem _music;
-    private MenuItem _close;
+
     private GameMenu _hauptmenu;
 
     public Gameplay()
@@ -56,17 +52,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusTraversalKeysEnabled(false);
         _menu = true;
         _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
-        _start = new MenuItem("Start Game", new Position(9, 7));
-        _highscore = new MenuItem("Highscore", new Position(12, 10));
-        _sound = new MenuItem("Sound", new Position(12, 13));
-        _music = new MenuItem("Music", new Position(12, 16));
-        _close = new MenuItem("Close", new Position(12, 19));
-        _hauptmenu.add(new MenuItem("Resume", new Position(12, 22)));
-        _hauptmenu.add(_start);
-        _hauptmenu.add(_highscore);
-        _hauptmenu.add(_sound);
-        _hauptmenu.add(_music);
-        _hauptmenu.add(_close);
+
+        // Die Schriftzüge sollen mitten in dem grünen Rechteck angezeigt werden
+        _hauptmenu.add(new MenuItem("Start Game", new Position(75, 20)));
+        _hauptmenu.add(new MenuItem("Highscore ", new Position(76, 40)));
+        _hauptmenu.add(new MenuItem("Sound", new Position(80, 60)));
+        _hauptmenu.add(new MenuItem("Music", new Position(80, 80)));
+        _hauptmenu.add(new MenuItem("Close", new Position(80, 100)));
 
         _snake = new Snake(_startposition);
         _sebastian = new CollisionManager(_snake);
