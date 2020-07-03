@@ -182,11 +182,11 @@ public class Snake implements Paintable
             _state = State.ALIVE;
         }
     }
-    
-    public int getScore() {
-    	return _score;
+
+    public int getScore()
+    {
+        return _score;
     }
-   
 
     @Override
     public int getX()
@@ -194,9 +194,6 @@ public class Snake implements Paintable
         return 0;
     }
 
-    public int getScore() {
-    	return _score;
-    }
     @Override
     public int getY()
     {
