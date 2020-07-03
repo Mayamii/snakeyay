@@ -38,11 +38,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private int _delay = 100;
 
     private Position _startposition;
-
+    private boolean _pause;
     private boolean _menu;
     private int _index;
 
     private GameMenu _hauptmenu;
+    private PauseMenu _pausemenu;
 
     public Gameplay()
     {
@@ -51,14 +52,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         _menu = true;
+        _pause = true;
         _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
 
         // Die Schriftzüge sollen mitten in dem grünen Rechteck angezeigt werden
-        _hauptmenu.add(new MenuItem("Start Game", new Position(75, 20)));
-        _hauptmenu.add(new MenuItem("Highscore ", new Position(76, 40)));
-        _hauptmenu.add(new MenuItem("Sound", new Position(80, 60)));
-        _hauptmenu.add(new MenuItem("Music", new Position(80, 80)));
-        _hauptmenu.add(new MenuItem("Close", new Position(80, 100)));
+        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));
+        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
+        _hauptmenu.add(new MenuItem("Sound", new Position(75, 60)));
+        _hauptmenu.add(new MenuItem("Music", new Position(75, 80)));
+        _hauptmenu.add(new MenuItem("Close", new Position(75, 100)));
 
         _snake = new Snake(_startposition);
         _sebastian = new CollisionManager(_snake);
@@ -218,6 +220,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             }
 
             repaint();
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_P)
+        {
+            _pause = !_pause;
+            _index = 0;
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE && _gameover)
