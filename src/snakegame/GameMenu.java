@@ -37,10 +37,10 @@ public class GameMenu
     {
         g.setColor(Color.green);
         //TO DO Werte Checken --> Positon wird nicht genutzt
-        // width: multiple of 34 (34*23=782)
-        //heigth; multiple of 23 (23*25 = 575)
-        g.drawRect(64, 75, 782, 575);
-        g.fillRect(64, 75, 782, 575);
+        // width: multiple of 34 (34*10=782)
+        //heigth; multiple of 23 (23*14 = 575)
+        g.drawRect(225, 75, 450, 575);
+        g.fillRect(225, 75, 450, 575);
         for (MenuItem menuItem : _menuItems)
         {
             menuItem.paint(g);

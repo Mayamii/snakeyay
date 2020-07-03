@@ -1,7 +1,6 @@
 package snakegame;
 
 import java.awt.Color;
-import snakegame.material.snake.Snake;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -57,12 +56,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusTraversalKeysEnabled(false);
         _menu = true;
         _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
-        _start = new MenuItem("Start Game", new Position(400, 225));
-        _highscore = new MenuItem("Highscore", new Position(400, 300));
-        _sound = new MenuItem("Sound", new Position(400, 375));
-        _music = new MenuItem("Music", new Position(400, 450));
-        _close = new MenuItem("Close", new Position(400, 525));
-        _hauptmenu.add(new MenuItem("Resume", new Position(400, 150)));
+        _start = new MenuItem("Start Game", new Position(9, 7));
+        _highscore = new MenuItem("Highscore", new Position(12, 10));
+        _sound = new MenuItem("Sound", new Position(12, 13));
+        _music = new MenuItem("Music", new Position(12, 16));
+        _close = new MenuItem("Close", new Position(12, 19));
+        _hauptmenu.add(new MenuItem("Resume", new Position(12, 22)));
         _hauptmenu.add(_start);
         _hauptmenu.add(_highscore);
         _hauptmenu.add(_sound);
@@ -205,7 +204,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER)
             {
-                _hauptmenu.getSelectedItem();
+                MenuItem menuItem = _hauptmenu.getSelectedItem();
+
+                switch (menuItem.getText())
+                {
+                case "Start Game":
+                    break;
+                case "Highscore":
+                    break;
+                case "Sound":
+                    break;
+                case "Music":
+                    break;
+                case "Close":
+                    closeGame();
+                    break;
+
+                default:
+                    break;
+                }
             }
 
             repaint();
@@ -247,10 +264,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
-            Container p = this.getTopLevelAncestor();
-            p.dispatchEvent(
-                    new WindowEvent((JFrame) p, WindowEvent.WINDOW_CLOSING));
+            closeGame();
         }
+    }
+
+    private void closeGame()
+    {
+        Container p = this.getTopLevelAncestor();
+        p.dispatchEvent(
+                new WindowEvent((JFrame) p, WindowEvent.WINDOW_CLOSING));
     }
 
     @Override
