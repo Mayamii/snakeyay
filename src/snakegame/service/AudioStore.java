@@ -26,15 +26,20 @@ public class AudioStore
         return _audios.get(key);
     }
 
-    public static void playAudio(File sound)
+    public static void playAudio(AudioName sound)
     {
         try
         {
-            File soundEffect = sound;
+            File soundEffect = getSound(sound);
             AudioInputStream audioInputStream = AudioSystem
                 .getAudioInputStream(soundEffect.getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
+            if (sound == AudioName.GOURMETRACE)
+            {
+                clip.loop(-1);
+                ;
+            }
             clip.start();
         }
         catch (Exception e)

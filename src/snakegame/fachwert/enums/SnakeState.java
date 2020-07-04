@@ -1,6 +1,6 @@
 package snakegame.fachwert.enums;
 
-public enum State
+public enum SnakeState
 {
     DEAD, ALIVE, INVINCIBLE, SLOW, FAST, INVERTED
 }

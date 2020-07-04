@@ -3,7 +3,7 @@ package snakegame.service;
 import java.util.ArrayList;
 
 import snakegame.fachwert.enums.AudioName;
-import snakegame.fachwert.enums.State;
+import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.food.EwwFood;
 import snakegame.material.food.FastFood;
 import snakegame.material.food.Food;
@@ -171,7 +171,7 @@ public class ObjectManager
                 _snake.eats(food);
                 removeFoodfromList(food);
                 addRandomFood(food);
-                AudioStore.playAudio(AudioStore.getSound(AudioName.EAT));
+                AudioStore.playAudio(AudioName.EAT);
 
                 return;
             }
@@ -186,7 +186,7 @@ public class ObjectManager
     public void update()
     {
         if ((bitesOwnBody() || hitsLabyrinth())
-                && _snake.getState() != State.INVINCIBLE)
+                && _snake.getState() != SnakeState.INVINCIBLE)
         {
             _snake.dies();
         }

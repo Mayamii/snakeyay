@@ -7,7 +7,7 @@ import snakegame.fachwert.Position;
 import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.Effect;
 import snakegame.fachwert.enums.PictureName;
-import snakegame.fachwert.enums.State;
+import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.Paintable;
 import snakegame.material.food.Food;
 import snakegame.service.ImageStore;
@@ -19,7 +19,7 @@ public class Snake implements Paintable
     private Tail _tail;
     private boolean _dead = false;
     private int _score;
-    private State _state;
+    private SnakeState _state;
     private int _updateCounter;
 
     public Snake(Position pos)
@@ -28,7 +28,7 @@ public class Snake implements Paintable
         _tail = new Tail(pos, ImageStore.getImage(PictureName.SNAKEBODY));
         _moving = false;
         _score = 0;
-        _state = State.ALIVE;
+        _state = SnakeState.ALIVE;
         _updateCounter = 0;
     }
 
@@ -53,7 +53,7 @@ public class Snake implements Paintable
             case INVERSE:
                 _score++;
                 _tail.growenable(1);
-                _state = State.INVERTED;
+                _state = SnakeState.INVERTED;
                 _updateCounter = 30;
                 break;
             case SUPER:
@@ -63,20 +63,20 @@ public class Snake implements Paintable
             case INVINCIBLE:
                 _score += 3;
                 _tail.growenable(1);
-                _state = State.INVINCIBLE;
+                _state = SnakeState.INVINCIBLE;
                 _updateCounter = 50;
                 break;
             case SLOW:
                 _score++;
                 _tail.growenable(1);
-                _state = State.SLOW;
+                _state = SnakeState.SLOW;
                 _updateCounter = 20;
 
                 break;
             case FAST:
                 _score++;
                 _tail.growenable(3);
-                _state = State.FAST;
+                _state = SnakeState.FAST;
                 _updateCounter = 60;
 
                 break;
@@ -163,7 +163,7 @@ public class Snake implements Paintable
         _tail.paint(g, frame);
     }
 
-    public State getSnakeState()
+    public SnakeState getSnakeState()
     {
         return _state;
     }
@@ -171,8 +171,8 @@ public class Snake implements Paintable
     @Override
     public void update()
     {
-        _head.setGod(_state == State.INVINCIBLE);
-        _tail.setGod(_state == State.INVINCIBLE);
+        _head.setGod(_state == SnakeState.INVINCIBLE);
+        _tail.setGod(_state == SnakeState.INVINCIBLE);
         if (_moving)
         {
             _tail.setNextPosition(_head.getPosition());
@@ -186,7 +186,7 @@ public class Snake implements Paintable
         }
         else
         {
-            _state = State.ALIVE;
+            _state = SnakeState.ALIVE;
         }
     }
 
@@ -204,7 +204,7 @@ public class Snake implements Paintable
 
     public void setDirection(Direction dir)
     {
-        if (_state == State.INVERTED)
+        if (_state == SnakeState.INVERTED)
         {
             dir = dir.inverse();
         }
@@ -226,7 +226,7 @@ public class Snake implements Paintable
 
     public void dies()
     {
-        _state = State.DEAD;
+        _state = SnakeState.DEAD;
         _moving = false;
     }
 
@@ -235,12 +235,12 @@ public class Snake implements Paintable
         return _score;
     }
 
-    public void setState(State state)
-    {//
+    public void setState(SnakeState state)
+    {
         _state = state;
     }
 
-    public State getState()
+    public SnakeState getState()
     {
         return _state;
     }

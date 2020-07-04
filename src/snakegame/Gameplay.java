@@ -15,12 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import snakegame.fachwert.Position;
-import snakegame.fachwert.enums.AudioName;
 import snakegame.fachwert.enums.Direction;
+import snakegame.fachwert.enums.GameState;
 import snakegame.fachwert.enums.PictureName;
-import snakegame.fachwert.enums.State;
+import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.snake.Snake;
-import snakegame.service.AudioStore;
 import snakegame.service.ImageStore;
 import snakegame.service.ObjectManager;
 
@@ -35,7 +34,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private Snake _snake;
 
     private ObjectManager _sebastian;
-    boolean _gameover = false;
+    GameState _state;
     private Timer _timer;
     private int _delay = 100;
 
@@ -43,6 +42,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     public Gameplay()
     {
+        _state = GameState.MENU;
         _startposition = new Position(4, 4);
         addKeyListener(this);
         setFocusable(true);
@@ -52,7 +52,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         // _food = new Food();
 
         _timer = new Timer(_delay, this);
-        AudioStore.playAudio(AudioStore.getSound(AudioName.GOURMETRACE));
+        //  AudioStore.playAudio(AudioName.GOURMETRACE);
         _timer.start();
     }
 
@@ -88,7 +88,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             _sebastian.returnFood(i)
                 .paint(g, this);
         }
-        if (_gameover)
+        if (_state == GameState.GAMEOVER)
         {
 
             g.setColor(Color.white);
@@ -120,19 +120,22 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         updateDelay();
 
         repaint();
-        _gameover = _snake.getState() == State.DEAD;
+        if (_snake.getState() == SnakeState.DEAD)
+        {
+            _state = GameState.GAMEOVER;
+        }
         //gameover
 
     }
 
     private void updateDelay()
     {
-        if (_snake.getState() == State.SLOW)
+        if (_snake.getState() == SnakeState.SLOW)
         {
             _delay = 170;
         }
-        else if (_snake.getState() == State.FAST
-                || _snake.getState() == State.INVINCIBLE)
+        else if (_snake.getState() == SnakeState.FAST
+                || _snake.getState() == SnakeState.INVINCIBLE)
         {
             _delay = 50;
         }
@@ -154,15 +157,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void keyPressed(KeyEvent e)
     {
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE
-                && _snake.getSnakeState() == State.DEAD)
+        if (_state == GameState.GAMEOVER)
         {
-            _snake = new Snake(_startposition);
-            _sebastian = new ObjectManager(_snake);
-            repaint();
+            if (e.getKeyCode() == KeyEvent.VK_SPACE)
+            {
+                _snake = new Snake(_startposition);
+                _sebastian = new ObjectManager(_snake);
+                _state = GameState.PLAYING;
+                repaint();
 
+            }
         }
-        if (_snake.getSnakeState() != State.DEAD)
+
+        if (_state == GameState.PLAYING)
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
@@ -195,6 +202,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             Container p = this.getTopLevelAncestor();
             p.dispatchEvent(
                     new WindowEvent((JFrame) p, WindowEvent.WINDOW_CLOSING));
+        }
+
+        if (_state == GameState.MENU)
+        {
+            _state = GameState.PLAYING;
         }
     }
 
