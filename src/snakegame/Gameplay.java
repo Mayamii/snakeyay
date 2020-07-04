@@ -121,7 +121,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (_pause)
         {
             _pausemenu.paint(g);
-            ;
         }
 
         if (_gameover)
@@ -258,7 +257,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER)
             {
-                MenuItem menuItem = _hauptmenu.getSelectedItem();
+                MenuItem menuItem = _pausemenu.getSelectedItem();
 
                 switch (menuItem.getText())
                 {
