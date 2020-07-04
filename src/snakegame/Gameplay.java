@@ -199,6 +199,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         if (_menu && !_pause)
         {
+            _snake.setMove(false);
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 _hauptmenu.selectNext();
@@ -242,7 +243,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }
 
         if (_pause && !_menu)
+
         {
+            _snake.setMove(false);
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 _pausemenu.selectNext();
@@ -284,7 +287,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             repaint();
 
         }
-        if (!_gameover)
+        if (!_gameover && !_pause && !_menu)
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
