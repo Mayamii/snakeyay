@@ -190,6 +190,11 @@ public class Snake implements Paintable
         }
     }
 
+    public int getScore()
+    {
+        return _score;
+    }
+
     @Override
     public int getX()
     {

@@ -40,6 +40,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private Position _startposition;
 
+    private boolean _menu;
+    private int _index;
+    private MenuItem _start;
+    private MenuItem _highscore;
+    private MenuItem _sound;
+    private MenuItem _music;
+    private MenuItem _close;
+    private GameMenu _hauptmenu;
+
     public Gameplay()
     {
         _state = GameState.MENU;
@@ -47,6 +56,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        _menu = true;
+        _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
+        _start = new MenuItem("Start Game", new Position(9, 7));
+        _highscore = new MenuItem("Highscore", new Position(12, 10));
+        _sound = new MenuItem("Sound", new Position(12, 13));
+        _music = new MenuItem("Music", new Position(12, 16));
+        _close = new MenuItem("Close", new Position(12, 19));
+        _hauptmenu.add(new MenuItem("Resume", new Position(12, 22)));
+        _hauptmenu.add(_start);
+        _hauptmenu.add(_highscore);
+        _hauptmenu.add(_sound);
+        _hauptmenu.add(_music);
+        _hauptmenu.add(_close);
+
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
         // _food = new Food();
@@ -54,11 +77,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _timer = new Timer(_delay, this);
         //  AudioStore.playAudio(AudioName.GOURMETRACE);
         _timer.start();
+
     }
 
     public void paint(Graphics g)
     {
-
         // draw title image border
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
@@ -68,6 +91,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         g.setColor(Color.white);
         g.drawRect(24, 72, 851, 577);
+
         g.setColor(Color.black);
         g.fillRect(25, 75, 850, 575);
 
@@ -88,7 +112,18 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             _sebastian.returnFood(i)
                 .paint(g, this);
         }
-        if (_state == GameState.GAMEOVER)
+
+      
+
+
+        //Menu zeichnen
+        if (_menu)
+        {
+            _hauptmenu.paint(g);
+        }
+
+          if (_state == GameState.GAMEOVER)
+
         {
 
             g.setColor(Color.white);
@@ -156,6 +191,49 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (e.getKeyCode() == KeyEvent.VK_M)
+        {
+            _menu = !_menu;
+            _index = 0;
+        }
+
+        if (_menu)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                _hauptmenu.selectNext();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_UP)
+            {
+                _hauptmenu.selectPrevious();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                MenuItem menuItem = _hauptmenu.getSelectedItem();
+
+                switch (menuItem.getText())
+                {
+                case "Start Game":
+                    break;
+                case "Highscore":
+                    break;
+                case "Sound":
+                    break;
+                case "Music":
+                    break;
+                case "Close":
+                    closeGame();
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
+            repaint();
+        }
 
         if (_state == GameState.GAMEOVER)
         {
@@ -199,15 +277,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 
         {
-            Container p = this.getTopLevelAncestor();
-            p.dispatchEvent(
-                    new WindowEvent((JFrame) p, WindowEvent.WINDOW_CLOSING));
+            closeGame();
         }
 
         if (_state == GameState.MENU)
         {
             _state = GameState.PLAYING;
         }
+    }
+
+    private void closeGame()
+    {
+        Container p = this.getTopLevelAncestor();
+        p.dispatchEvent(
+                new WindowEvent((JFrame) p, WindowEvent.WINDOW_CLOSING));
     }
 
     @Override
