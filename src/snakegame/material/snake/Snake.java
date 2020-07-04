@@ -7,7 +7,7 @@ import snakegame.fachwert.Position;
 import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.Effect;
 import snakegame.fachwert.enums.PictureName;
-import snakegame.fachwert.enums.State;
+import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.Paintable;
 import snakegame.material.food.Food;
 import snakegame.service.ImageStore;
@@ -19,7 +19,7 @@ public class Snake implements Paintable
     private Tail _tail;
     private boolean _dead = false;
     private int _score;
-    private State _state;
+    private SnakeState _state;
     private int _updateCounter;
 
     public Snake(Position pos)
@@ -28,7 +28,7 @@ public class Snake implements Paintable
         _tail = new Tail(pos, ImageStore.getImage(PictureName.SNAKEBODY));
         _moving = false;
         _score = 0;
-        _state = State.ALIVE;
+        _state = SnakeState.ALIVE;
         _updateCounter = 0;
     }
 
@@ -53,8 +53,8 @@ public class Snake implements Paintable
             case INVERSE:
                 _score++;
                 _tail.growenable(1);
-                _state = State.INVERTED;
-                _updateCounter = 10;
+                _state = SnakeState.INVERTED;
+                _updateCounter = 30;
                 break;
             case SUPER:
                 _score += 3;
@@ -63,21 +63,21 @@ public class Snake implements Paintable
             case INVINCIBLE:
                 _score += 3;
                 _tail.growenable(1);
-                _state = State.INVINCIBLE;
-                _updateCounter = 30;
+                _state = SnakeState.INVINCIBLE;
+                _updateCounter = 50;
                 break;
             case SLOW:
                 _score++;
                 _tail.growenable(1);
-                _state = State.SLOW;
-                _updateCounter = 10;
+                _state = SnakeState.SLOW;
+                _updateCounter = 20;
 
                 break;
             case FAST:
                 _score++;
-                _tail.growenable(1);
-                _state = State.FAST;
-                _updateCounter = 10;
+                _tail.growenable(3);
+                _state = SnakeState.FAST;
+                _updateCounter = 60;
 
                 break;
             case EWW:
@@ -115,7 +115,7 @@ public class Snake implements Paintable
                 break;
             case FAST:
                 _score++;
-                _tail.growenable(1);
+                _tail.growenable(3);
 
                 break;
             case EWW:
@@ -163,9 +163,16 @@ public class Snake implements Paintable
         _tail.paint(g, frame);
     }
 
+    public SnakeState getSnakeState()
+    {
+        return _state;
+    }
+
     @Override
     public void update()
     {
+        _head.setGod(_state == SnakeState.INVINCIBLE);
+        _tail.setGod(_state == SnakeState.INVINCIBLE);
         if (_moving)
         {
             _tail.setNextPosition(_head.getPosition());
@@ -179,7 +186,7 @@ public class Snake implements Paintable
         }
         else
         {
-            _state = State.ALIVE;
+            _state = SnakeState.ALIVE;
         }
     }
 
@@ -191,17 +198,21 @@ public class Snake implements Paintable
     @Override
     public int getX()
     {
-        return 0;
+        return getHeadX();
     }
 
     @Override
     public int getY()
     {
-        return 0;
+        return getHeadY();
     }
 
     public void setDirection(Direction dir)
     {
+        if (_state == SnakeState.INVERTED)
+        {
+            dir = dir.inverse();
+        }
         _head.setDirection(dir);
 
     }
@@ -220,13 +231,23 @@ public class Snake implements Paintable
 
     public void dies()
     {
+        _state = SnakeState.DEAD;
         _moving = false;
-        _dead = true;
     }
 
-    public boolean isDead()
+    public int getScore()
     {
-        return _dead;
+        return _score;
+    }
+
+    public void setState(SnakeState state)
+    {
+        _state = state;
+    }
+
+    public SnakeState getState()
+    {
+        return _state;
     }
 
 }
