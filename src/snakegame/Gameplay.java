@@ -39,15 +39,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private int _delay = 100;
 
     private Position _startposition;
-
+    private boolean _pause;
     private boolean _menu;
     private int _index;
-    private MenuItem _start;
-    private MenuItem _highscore;
-    private MenuItem _sound;
-    private MenuItem _music;
-    private MenuItem _close;
+
     private GameMenu _hauptmenu;
+    private GameMenu _pausemenu;
 
     public Gameplay()
     {
@@ -57,18 +54,22 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         _menu = true;
-        _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
-        _start = new MenuItem("Start Game", new Position(9, 7));
-        _highscore = new MenuItem("Highscore", new Position(12, 10));
-        _sound = new MenuItem("Sound", new Position(12, 13));
-        _music = new MenuItem("Music", new Position(12, 16));
-        _close = new MenuItem("Close", new Position(12, 19));
-        _hauptmenu.add(new MenuItem("Resume", new Position(12, 22)));
-        _hauptmenu.add(_start);
-        _hauptmenu.add(_highscore);
-        _hauptmenu.add(_sound);
-        _hauptmenu.add(_music);
-        _hauptmenu.add(_close);
+        _pause = false;
+        _hauptmenu = new GameMenu(new Position(10, 10), new Position(20, 20));
+        _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20));
+
+        // Die Schriftz�ge sollen mitten in dem gr�nen Rechteck angezeigt werden
+        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));
+        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
+        _hauptmenu.add(new MenuItem("Sound", new Position(75, 60)));
+        _hauptmenu.add(new MenuItem("Music", new Position(75, 80)));
+        _hauptmenu.add(new MenuItem("Close", new Position(75, 100)));
+
+        //Dies sind die Schriftz�ge des Pausenmen�s
+        _pausemenu.add(new MenuItem("Resume", new Position(70, 20)));
+        _pausemenu.add(new MenuItem("Sound", new Position(72, 40)));
+        _pausemenu.add(new MenuItem("Music", new Position(72, 60)));
+        _pausemenu.add(new MenuItem("Close", new Position(72, 80)));
 
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
@@ -122,7 +123,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             _hauptmenu.paint(g);
         }
 
+
+        if (_state == GameState.PAUSE)
+        {
+            _pausemenu.paint(g);
+        }
+
+
+
           if (_state == GameState.GAMEOVER)
+
 
         {
 
@@ -197,8 +207,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             _index = 0;
         }
 
-        if (_menu)
+        if (_menu && !_pause)
         {
+            _snake.setMove(false);
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 _hauptmenu.selectNext();
@@ -235,7 +246,51 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             repaint();
         }
 
+
+        if (e.getKeyCode() == KeyEvent.VK_P)
+        {
+
+        }
+
+        if (_pause && !_menu)
+
+        {
+            _snake.setMove(false);
+            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                _pausemenu.selectNext();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_UP)
+            {
+                _pausemenu.selectPrevious();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                MenuItem menuItem = _pausemenu.getSelectedItem();
+
+                switch (menuItem.getText())
+                {
+                case "Resume":
+                    break;
+                case "Sound":
+                    break;
+                case "Music":
+                    break;
+                case "Close":
+                    closeGame();
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
+        }
+
         if (_state == GameState.GAMEOVER)
+
         {
             if (e.getKeyCode() == KeyEvent.VK_SPACE)
             {
@@ -247,7 +302,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             }
         }
 
+
         if (_state == GameState.PLAYING)
+
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
