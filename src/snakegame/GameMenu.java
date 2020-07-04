@@ -35,10 +35,14 @@ public class GameMenu
 
     public void paint(Graphics g)
     {
-        g.setColor(Color.green);
+        g.setColor(_color);
         //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 für den linken Rand und 850-200 für die rechte Begrenzung
-        g.drawRect(225, 75, 450, 575);
-        g.fillRect(225, 75, 450, 575);
+        g.drawRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
+                (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
+                (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
+        g.fillRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
+                (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
+                (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
         for (MenuItem menuItem : _menuItems)
         {
             menuItem.paint(g);

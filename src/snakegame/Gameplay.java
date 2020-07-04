@@ -43,7 +43,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private int _index;
 
     private GameMenu _hauptmenu;
-    private PauseMenu _pausemenu;
+    private GameMenu _pausemenu;
 
     public Gameplay()
     {
@@ -53,8 +53,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         setFocusTraversalKeysEnabled(false);
         _menu = true;
         _pause = false;
-        _hauptmenu = new GameMenu(new Position(5, 5), new Position(20, 20));
-        _pausemenu = new PauseMenu(new Position(5, 5), new Position(20, 20));
+        _hauptmenu = new GameMenu(new Position(10, 10), new Position(20, 20));
+        _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20));
 
         // Die Schriftzüge sollen mitten in dem grünen Rechteck angezeigt werden
         _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));

@@ -9,8 +9,6 @@ import snakegame.fachwert.Position;
 
 public class PauseMenu
 {
-
-    private Color _color;
     private Position _linksOben;
     private Position _rechtsUnten;
     List<MenuItem> _menuItems = new ArrayList<MenuItem>();
@@ -19,8 +17,6 @@ public class PauseMenu
     {
         _linksOben = linksOben;
         _rechtsUnten = rechtsUnten;
-        _color = Color.BLUE;
-
     }
 
     public void add(MenuItem newItem)
@@ -37,8 +33,12 @@ public class PauseMenu
     {
         g.setColor(Color.BLUE);
         //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 für den linken Rand und 850-200 für die rechte Begrenzung
-        g.drawRect(225, 75, 450, 575);
-        g.fillRect(225, 75, 450, 575);
+        g.drawRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
+                (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
+                (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
+        g.fillRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
+                (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
+                (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
         for (MenuItem menuItem : _menuItems)
         {
             menuItem.paint(g);
