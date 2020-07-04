@@ -6,7 +6,6 @@ import java.util.HashMap;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
 
 import snakegame.fachwert.enums.AudioName;
 
@@ -15,6 +14,7 @@ public class AudioStore
     private static HashMap<AudioName, File> _audios;
     private static boolean _sound;
     private static boolean _music;
+    private static Clip _clip;
 
     static
     {
@@ -23,7 +23,6 @@ public class AudioStore
         _audios.put(AudioName.EAT, new File("smb_warning.wav"));
         _sound = true;
         _music = true;
-
     }
 
     public static File getSound(AudioName key)
@@ -40,28 +39,41 @@ public class AudioStore
     public static void toggleMusic()
     {
         _music = !_music;
-        Clip clip = null;
-        try
+        if (_clip != null)
         {
-            clip = AudioSystem.getClip();
+            _clip.stop();
         }
-        catch (LineUnavailableException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        clip.stop();
-        playAudio(AudioName.GOURMETRACE);
+        playMusic(AudioName.GOURMETRACE);
 
     }
 
     public static void playAudio(AudioName sound)
     {
-        if (sound == AudioName.EAT && !_sound)
+        if (!_sound)
         {
             return;
         }
-        if (sound == AudioName.GOURMETRACE && !_music)
+
+        try
+        {
+            File soundEffect = getSound(sound);
+            AudioInputStream audioInputStream = AudioSystem
+                .getAudioInputStream(soundEffect.getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public static void playMusic(AudioName sound)
+    {
+
+        if (!_music)
         {
             return;
         }
@@ -71,18 +83,10 @@ public class AudioStore
             File soundEffect = getSound(sound);
             AudioInputStream audioInputStream = AudioSystem
                 .getAudioInputStream(soundEffect.getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            if (sound == AudioName.EAT)
-            {
-
-            }
-            if (sound == AudioName.GOURMETRACE)
-            {
-                clip.loop(-1);
-                ;
-            }
-            clip.start();
+            _clip = AudioSystem.getClip();
+            _clip.open(audioInputStream);
+            _clip.loop(-1);
+            _clip.start();
         }
         catch (Exception e)
         {

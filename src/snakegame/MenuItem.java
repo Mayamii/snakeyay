@@ -8,13 +8,13 @@ import snakegame.fachwert.Position;
 
 public class MenuItem
 {
-
-    private String _menuText;
-    private boolean _selected;
-    private Position _menuPosition;
     protected static final int GRIDSIZE = 5;
     protected static final int OFFSETY = 75;
     protected static final int OFFSETX = 25;
+
+    protected String _menuText;
+    protected boolean _selected;
+    protected Position _menuPosition;
 
     public MenuItem(String menuText, Position position)
     {

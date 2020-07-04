@@ -15,11 +15,12 @@ public class GameMenu
     private Position _rechtsUnten;
     List<MenuItem> _menuItems = new ArrayList<MenuItem>();
 
-    public GameMenu(Position linksOben, Position rechtsUnten)
+    public GameMenu(Position linksOben, Position rechtsUnten,
+            Color hintergrundfarbe)
     {
         _linksOben = linksOben;
         _rechtsUnten = rechtsUnten;
-        _color = Color.GREEN;
+        _color = hintergrundfarbe;
 
     }
 
@@ -36,7 +37,7 @@ public class GameMenu
     public void paint(Graphics g)
     {
         g.setColor(_color);
-        //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 für den linken Rand und 850-200 für die rechte Begrenzung
+        //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 fï¿½r den linken Rand und 850-200 fï¿½r die rechte Begrenzung
         g.drawRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
                 (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
                 (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
@@ -58,7 +59,7 @@ public class GameMenu
                 return menuItem;
             }
         }
-        //wird niemals auftreten, weil wir immer mindestens ein Item hinzugefügen
+        //wird niemals auftreten, weil wir immer mindestens ein Item hinzugefï¿½gen
         return null;
     }
 

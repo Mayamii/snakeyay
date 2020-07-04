@@ -27,55 +27,67 @@ import snakegame.service.ObjectManager;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
-
     /**
      * Default serialVersionUID
      */
     private static final long serialVersionUID = 1L;
 
     private Snake _snake;
-
     private ObjectManager _sebastian;
-    GameState _state;
+    private Position _startposition;
+
+    GameState _currentState;
+    GameState _lastState;
+
     private Timer _timer;
     private int _delay = 100;
-
-    private Position _startposition;
 
     private GameMenu _hauptmenu;
     private GameMenu _pausemenu;
 
     public Gameplay()
     {
-        _state = GameState.MENU;
+        _currentState = GameState.MENU;
         _startposition = new Position(4, 4);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        _hauptmenu = new GameMenu(new Position(10, 10), new Position(20, 20));
-        _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20));
-
-        // Die Schriftz�ge sollen mitten in dem gr�nen Rechteck angezeigt werden
-        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));
-        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
-        _hauptmenu.add(new MenuItem("Sound", new Position(75, 60)));
-        _hauptmenu.add(new MenuItem("Music", new Position(75, 80)));
-        _hauptmenu.add(new MenuItem("Close", new Position(75, 100)));
-
-        //Dies sind die Schriftz�ge des Pausenmen�s
-        _pausemenu.add(new MenuItem("Resume", new Position(70, 20)));
-        _pausemenu.add(new MenuItem("Sound", new Position(72, 40)));
-        _pausemenu.add(new MenuItem("Music", new Position(72, 60)));
-        _pausemenu.add(new MenuItem("Close", new Position(72, 80)));
+        createMenus();
 
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
         // _food = new Food();
 
         _timer = new Timer(_delay, this);
-        AudioStore.playAudio(AudioName.GOURMETRACE);
+        AudioStore.playMusic(AudioName.GOURMETRACE);
         _timer.start();
 
+    }
+
+    private void createMenus()
+    {
+        _hauptmenu = new GameMenu(new Position(10, 10), new Position(20, 20),
+                Color.BLUE);
+        _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20),
+                Color.GREEN);
+
+        ToggleMenuItem sound = new ToggleMenuItem("Sound", new Position(72, 60),
+                true);
+        ToggleMenuItem music = new ToggleMenuItem("Music", new Position(72, 80),
+                true);
+
+        // Die Schriftz�ge sollen mitten in dem gr�nen Rechteck angezeigt werden
+        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));
+        //        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
+        _hauptmenu.add(sound);
+        _hauptmenu.add(music);
+        _hauptmenu.add(new MenuItem("Close", new Position(72, 100)));
+
+        //Dies sind die Schriftz�ge des Pausenmen�s
+        _pausemenu.add(new MenuItem("Resume", new Position(70, 20)));
+        _pausemenu.add(sound);
+        _pausemenu.add(music);
+        _pausemenu.add(new MenuItem("Close", new Position(72, 100)));
     }
 
     public void paint(Graphics g)
@@ -83,24 +95,23 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         // draw title image border
         alwaysPaintTHIS(g);
 
-        if (_state == GameState.PLAYING)
+        if (_currentState == GameState.PLAYING)
         {
             paintSnakeAndCookies(g);
         }
 
         //Menu zeichnen
-        if (_state == GameState.MENU)
+        if (_currentState == GameState.MENU)
         {
             _hauptmenu.paint(g);
         }
 
-        if (_state == GameState.PAUSE)
+        if (_currentState == GameState.PAUSE)
         {
             _pausemenu.paint(g);
         }
 
-        if (_state == GameState.GAMEOVER)
-
+        if (_currentState == GameState.GAMEOVER)
         {
             paintSnakeAndCookies(g);
 
@@ -110,7 +121,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             g.setFont(new Font("arial", Font.BOLD, 20));
             g.drawString("Press Space to restart", 350, 340);
-
         }
 
         g.dispose();
@@ -156,25 +166,23 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         _timer.start();
-
         update();
         repaint();
-
     }
 
     private void update()
     {
-        _snake.update();
-        _sebastian.update();
-        updateDelay();
+        if (_currentState == GameState.PLAYING)
+        {
+            _snake.update();
+            _sebastian.update();
+            updateDelay();
+        }
 
-        repaint();
         if (_snake.getState() == SnakeState.DEAD)
         {
-            _state = GameState.GAMEOVER;
+            _currentState = GameState.GAMEOVER;
         }
-        //gameover
-
     }
 
     private void updateDelay()
@@ -200,20 +208,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     {
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
-        _state = GameState.PLAYING;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-
+        _currentState = GameState.PLAYING;
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
+        _lastState = _currentState;
 
-        if (_state == GameState.MENU)
+        System.out.println("State: " + _currentState + " Key:"
+                + KeyEvent.getKeyText(e.getKeyCode()));
+        if (_lastState == GameState.MENU)
         {
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
@@ -239,9 +244,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                     break;
                 case "Sound":
                     AudioStore.toggleSoundeffects();
+                    ((ToggleMenuItem) menuItem).toggle();
                     break;
                 case "Music":
                     AudioStore.toggleMusic();
+                    ((ToggleMenuItem) menuItem).toggle();
                     break;
                 case "Close":
                     closeGame();
@@ -255,15 +262,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             repaint();
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_P)
+        if (_lastState == GameState.PAUSE)
         {
-            _state = GameState.PAUSE;
-        }
 
-        if (_state == GameState.PAUSE)
+            if (e.getKeyCode() == KeyEvent.VK_P)
+            {
+                _currentState = GameState.PLAYING;
+            }
 
-        {
-            _snake.setMove(false);
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 _pausemenu.selectNext();
@@ -281,27 +287,24 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 switch (menuItem.getText())
                 {
                 case "Resume":
-                    _state = GameState.PLAYING;
+                    _currentState = GameState.PLAYING;
                     break;
                 case "Sound":
                     AudioStore.toggleSoundeffects();
+                    ((ToggleMenuItem) menuItem).toggle();
                     break;
                 case "Music":
                     AudioStore.toggleMusic();
+                    ((ToggleMenuItem) menuItem).toggle();
                     break;
                 case "Close":
                     closeGame();
                     break;
-
-                default:
-                    break;
                 }
             }
-
         }
 
-        if (_state == GameState.GAMEOVER)
-
+        if (_lastState == GameState.GAMEOVER)
         {
             if (e.getKeyCode() == KeyEvent.VK_SPACE)
             {
@@ -310,7 +313,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             }
         }
 
-        if (_state == GameState.PLAYING)
+        if (_lastState == GameState.PLAYING)
 
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
@@ -336,14 +339,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 _snake.setDirection(Direction.DOWN);
             }
 
+            if (e.getKeyCode() == KeyEvent.VK_P)
+            {
+                _currentState = GameState.PAUSE;
+            }
+
         }
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-
         {
             closeGame();
         }
-
     }
 
     private void closeGame()
@@ -356,8 +362,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyReleased(KeyEvent e)
     {
-        // TODO Auto-generated method stub
 
     }
 
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+
+    }
 }
