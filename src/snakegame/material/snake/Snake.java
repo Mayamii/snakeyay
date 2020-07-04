@@ -235,11 +235,6 @@ public class Snake implements Paintable
         _moving = false;
     }
 
-    public int getScore()
-    {
-        return _score;
-    }
-
     public void setState(SnakeState state)
     {
         _state = state;

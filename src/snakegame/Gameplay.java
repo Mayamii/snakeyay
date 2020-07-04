@@ -15,11 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import snakegame.fachwert.Position;
+import snakegame.fachwert.enums.AudioName;
 import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.GameState;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.snake.Snake;
+import snakegame.service.AudioStore;
 import snakegame.service.ImageStore;
 import snakegame.service.ObjectManager;
 
@@ -39,9 +41,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private int _delay = 100;
 
     private Position _startposition;
-    private boolean _pause;
-    private boolean _menu;
-    private int _index;
 
     private GameMenu _hauptmenu;
     private GameMenu _pausemenu;
@@ -53,8 +52,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        _menu = true;
-        _pause = false;
         _hauptmenu = new GameMenu(new Position(10, 10), new Position(20, 20));
         _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20));
 
@@ -76,7 +73,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         // _food = new Food();
 
         _timer = new Timer(_delay, this);
-        //  AudioStore.playAudio(AudioName.GOURMETRACE);
+        AudioStore.playAudio(AudioName.GOURMETRACE);
         _timer.start();
 
     }
@@ -84,6 +81,54 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void paint(Graphics g)
     {
         // draw title image border
+        alwaysPaintTHIS(g);
+
+        if (_state == GameState.PLAYING)
+        {
+            paintSnakeAndCookies(g);
+        }
+
+        //Menu zeichnen
+        if (_state == GameState.MENU)
+        {
+            _hauptmenu.paint(g);
+        }
+
+        if (_state == GameState.PAUSE)
+        {
+            _pausemenu.paint(g);
+        }
+
+        if (_state == GameState.GAMEOVER)
+
+        {
+            paintSnakeAndCookies(g);
+
+            g.setColor(Color.white);
+            g.setFont(new Font("arial", Font.BOLD, 50));
+            g.drawString("Game Over", 300, 300);
+
+            g.setFont(new Font("arial", Font.BOLD, 20));
+            g.drawString("Press Space to restart", 350, 340);
+
+        }
+
+        g.dispose();
+    }
+
+    private void paintSnakeAndCookies(Graphics g)
+    {
+        _snake.paint(g, this);
+
+        for (int i = 0; i < _sebastian.getLengthList(); i++)
+        {
+            _sebastian.returnFood(i)
+                .paint(g, this);
+        }
+    }
+
+    private void alwaysPaintTHIS(Graphics g)
+    {
         g.setColor(Color.white);
         g.drawRect(24, 10, 851, 55);
 
@@ -105,47 +150,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("Length: " + _snake.getLength(), 780, 50);
-
-        _snake.paint(g, this);
-
-        for (int i = 0; i < _sebastian.getLengthList(); i++)
-        {
-            _sebastian.returnFood(i)
-                .paint(g, this);
-        }
-
-      
-
-
-        //Menu zeichnen
-        if (_menu)
-        {
-            _hauptmenu.paint(g);
-        }
-
-
-        if (_state == GameState.PAUSE)
-        {
-            _pausemenu.paint(g);
-        }
-
-
-
-          if (_state == GameState.GAMEOVER)
-
-
-        {
-
-            g.setColor(Color.white);
-            g.setFont(new Font("arial", Font.BOLD, 50));
-            g.drawString("Game Over", 300, 300);
-
-            g.setFont(new Font("arial", Font.BOLD, 20));
-            g.drawString("Press Space to restart", 350, 340);
-
-        }
-
-        g.dispose();
     }
 
     @Override
@@ -192,6 +196,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     }
 
+    private void newGame()
+    {
+        _snake = new Snake(_startposition);
+        _sebastian = new ObjectManager(_snake);
+        _state = GameState.PLAYING;
+    }
+
     @Override
     public void keyTyped(KeyEvent e)
     {
@@ -201,15 +212,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_M)
-        {
-            _menu = !_menu;
-            _index = 0;
-        }
 
-        if (_menu && !_pause)
+        if (_state == GameState.MENU)
         {
-            _snake.setMove(false);
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 _hauptmenu.selectNext();
@@ -227,12 +232,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 switch (menuItem.getText())
                 {
                 case "Start Game":
+
+                    newGame();
                     break;
                 case "Highscore":
                     break;
                 case "Sound":
+                    AudioStore.toggleSoundeffects();
                     break;
                 case "Music":
+                    AudioStore.toggleMusic();
                     break;
                 case "Close":
                     closeGame();
@@ -246,13 +255,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             repaint();
         }
 
-
         if (e.getKeyCode() == KeyEvent.VK_P)
         {
 
         }
 
-        if (_pause && !_menu)
+        if (_state == GameState.PAUSE)
 
         {
             _snake.setMove(false);
@@ -273,10 +281,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 switch (menuItem.getText())
                 {
                 case "Resume":
+                    _state = GameState.PLAYING;
                     break;
                 case "Sound":
+                    AudioStore.toggleSoundeffects();
                     break;
                 case "Music":
+                    AudioStore.toggleMusic();
                     break;
                 case "Close":
                     closeGame();
@@ -294,14 +305,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         {
             if (e.getKeyCode() == KeyEvent.VK_SPACE)
             {
-                _snake = new Snake(_startposition);
-                _sebastian = new ObjectManager(_snake);
-                _state = GameState.PLAYING;
+                newGame();
                 repaint();
-
             }
         }
-
 
         if (_state == GameState.PLAYING)
 
@@ -337,10 +344,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             closeGame();
         }
 
-        if (_state == GameState.MENU)
-        {
-            _state = GameState.PLAYING;
-        }
     }
 
     private void closeGame()
