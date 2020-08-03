@@ -1,5 +1,8 @@
 package snakegame.fachwert.enums;
 
+/*
+ * Facwert Enum Klasse für die Namen der verwendeten Grafiken
+ */
 public enum PictureName
 {
     HEADLEFT, HEADRIGHT, HEADUP, HEADDOWN, TITLE, SNAKEBODY, NORMALFOOD, FASTFOOD, INVERSEFOOD, INVINCIBLEFOOD, SLOWFOOD, SUPERFOOD, EWWFOOD, ORANGE, RED, YELLOW, BLUE, INDIGO, PURPLE, PINK, WOWUP, WOWRIGHT, WOWDOWN, WOWLEFT

@@ -1,18 +1,17 @@
 package snakegame;
+
 import java.awt.Color;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JRadioButton;
 
-import snakegame.menu.mainMenu;
-
+/*
+ * Hauptklasse für das SnakeSpiel
+ */
 public class MainSnake
 {
     public static void main(String[] args)
     {
-    	
+
         JFrame frame = new JFrame();
         Gameplay _gameplay = new Gameplay();
         frame.setLocationRelativeTo(null);

@@ -71,23 +71,23 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20),
                 Color.GREEN);
 
-        ToggleMenuItem sound = new ToggleMenuItem("Sound", new Position(72, 60),
+        ToggleMenuItem sound = new ToggleMenuItem("Sound", new Position(68, 50),
                 true);
-        ToggleMenuItem music = new ToggleMenuItem("Music", new Position(72, 80),
+        ToggleMenuItem music = new ToggleMenuItem("Music", new Position(69, 70),
                 true);
 
         // Die Schriftz�ge sollen mitten in dem gr�nen Rechteck angezeigt werden
-        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));
+        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 30)));
         //        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
         _hauptmenu.add(sound);
         _hauptmenu.add(music);
-        _hauptmenu.add(new MenuItem("Close", new Position(72, 100)));
+        _hauptmenu.add(new MenuItem("Close", new Position(75, 90)));
 
         //Dies sind die Schriftz�ge des Pausenmen�s
-        _pausemenu.add(new MenuItem("Resume", new Position(70, 20)));
+        _pausemenu.add(new MenuItem("Resume", new Position(72, 30)));
         _pausemenu.add(sound);
         _pausemenu.add(music);
-        _pausemenu.add(new MenuItem("Close", new Position(72, 100)));
+        _pausemenu.add(new MenuItem("Close", new Position(75, 90)));
     }
 
     public void paint(Graphics g)
