@@ -71,7 +71,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20),
                 Color.GREEN);
 
-        // Die Schriftz�ge sollen mitten in dem gr�nen Rechteck angezeigt werden
+        // Die Schriftzüge sollen mitten in dem grünen Rechteck angezeigt werden
         _hauptmenu.add(new MenuItem(MenuText.STARTGAME, new Position(70, 20)));
         //        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
         _hauptmenu.add(
