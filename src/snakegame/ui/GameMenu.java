@@ -1,4 +1,4 @@
-package snakegame;
+package snakegame.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import snakegame.fachwert.Position;
+import snakegame.fachwert.enums.MenuText;
 
 public class GameMenu
 {
@@ -31,7 +32,6 @@ public class GameMenu
             newItem.setSelected(true);
         }
         _menuItems.add(newItem);
-
     }
 
     public void paint(Graphics g)
@@ -86,6 +86,15 @@ public class GameMenu
         vorherigesMenuItem.setSelected(true);
         aktuellesMenuItem.setSelected(false);
 
+    }
+
+    public MenuItem getMenuItemBy(MenuText text)
+    {
+        for (MenuItem menuItem : _menuItems)
+        {
+            if (menuItem.getText() == text) return menuItem;
+        }
+        return null;
     }
 
 }

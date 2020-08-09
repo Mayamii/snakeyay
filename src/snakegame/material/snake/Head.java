@@ -11,9 +11,9 @@ import snakegame.service.ImageStore;
 
 public class Head extends AbstractPaintable
 {
-
     private Direction _direction;
     private boolean _godmode;
+    private boolean _dirty;
 
     protected Head(Position pos)
     {
@@ -35,7 +35,6 @@ public class Head extends AbstractPaintable
 
         if (_direction == Direction.LEFT)
         {
-
             _image = _godmode ? ImageStore.getImage(PictureName.WOWLEFT)
                     : ImageStore.getImage(PictureName.HEADLEFT);
         }
@@ -55,7 +54,6 @@ public class Head extends AbstractPaintable
 
     public void move()
     {
-
         switch (_direction)
         {
         case RIGHT:
@@ -71,6 +69,7 @@ public class Head extends AbstractPaintable
             _position = _position.moveDown();
             break;
         }
+        _dirty = false;
     }
 
     private boolean isUturn(Direction dir)
@@ -83,11 +82,13 @@ public class Head extends AbstractPaintable
 
     public void setDirection(Direction dir)
     {
+        if (dir == _direction || _dirty) return;
+
         if (!isUturn(dir))
         {
             _direction = dir;
+            _dirty = true;
         }
-
     }
 
     public Direction getDirection()

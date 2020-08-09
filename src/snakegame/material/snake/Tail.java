@@ -16,7 +16,6 @@ public class Tail extends AbstractPaintable implements Paintable
 {
 
     private LinkedList<Position> _body;
-    private boolean _growplease = false;
     private Position _nextPosition;
     private Position _lastPiece;
     private int _growLength;

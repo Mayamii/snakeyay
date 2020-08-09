@@ -1,16 +1,17 @@
-package snakegame;
+package snakegame.ui;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
 import snakegame.fachwert.Position;
+import snakegame.fachwert.enums.MenuText;
 
 public class ToggleMenuItem extends MenuItem
 {
     private boolean _isOn;
 
-    public ToggleMenuItem(String text, Position pos, boolean on)
+    public ToggleMenuItem(MenuText text, Position pos, boolean on)
     {
         super(text, pos);
         _isOn = on;
@@ -25,7 +26,7 @@ public class ToggleMenuItem extends MenuItem
         {
             g.setColor(Color.RED);
         }
-        g.drawString(_menuText + ": " + _isOn,
+        g.drawString(formatiereAusgabe(),
                 _menuPosition.getX() * GRIDSIZE + OFFSETX,
                 _menuPosition.getY() * GRIDSIZE + OFFSETY);
 
@@ -34,5 +35,11 @@ public class ToggleMenuItem extends MenuItem
     public void toggle()
     {
         _isOn = !_isOn;
+    }
+
+    private String formatiereAusgabe()
+    {
+        return String.format("%s: %s", _menuText.getText(),
+                _isOn ? "ON" : "OFF");
     }
 }

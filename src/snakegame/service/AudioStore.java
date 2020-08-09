@@ -33,7 +33,6 @@ public class AudioStore
     public static void toggleSoundeffects()
     {
         _sound = !_sound;
-
     }
 
     public static void toggleMusic()
@@ -53,7 +52,6 @@ public class AudioStore
         {
             return;
         }
-
         try
         {
             File soundEffect = getSound(sound);
@@ -67,18 +65,15 @@ public class AudioStore
         {
             System.out.println(e.getMessage());
         }
-
     }
 
     public static void playMusic(AudioName sound)
     {
-
         if (!_music)
         {
             return;
         }
         try
-
         {
             File soundEffect = getSound(sound);
             AudioInputStream audioInputStream = AudioSystem
@@ -92,6 +87,5 @@ public class AudioStore
         {
             System.out.println(e.getMessage());
         }
-
     }
 }

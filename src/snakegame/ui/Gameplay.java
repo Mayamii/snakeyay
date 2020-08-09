@@ -1,4 +1,4 @@
-package snakegame;
+package snakegame.ui;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -18,6 +18,7 @@ import snakegame.fachwert.Position;
 import snakegame.fachwert.enums.AudioName;
 import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.GameState;
+import snakegame.fachwert.enums.MenuText;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.snake.Snake;
@@ -36,8 +37,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private ObjectManager _sebastian;
     private Position _startposition;
 
-    GameState _currentState;
-    GameState _lastState;
+    GameState _gameState;
 
     private Timer _timer;
     private int _delay = 100;
@@ -47,7 +47,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     public Gameplay()
     {
-        _currentState = GameState.MENU;
+        _gameState = GameState.MENU;
         _startposition = new Position(4, 4);
         addKeyListener(this);
         setFocusable(true);
@@ -71,23 +71,22 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20),
                 Color.GREEN);
 
-        ToggleMenuItem sound = new ToggleMenuItem("Sound", new Position(72, 60),
-                true);
-        ToggleMenuItem music = new ToggleMenuItem("Music", new Position(72, 80),
-                true);
-
         // Die Schriftz�ge sollen mitten in dem gr�nen Rechteck angezeigt werden
-        _hauptmenu.add(new MenuItem("Start Game", new Position(70, 20)));
+        _hauptmenu.add(new MenuItem(MenuText.STARTGAME, new Position(70, 20)));
         //        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
-        _hauptmenu.add(sound);
-        _hauptmenu.add(music);
-        _hauptmenu.add(new MenuItem("Close", new Position(72, 100)));
+        _hauptmenu.add(
+                new ToggleMenuItem(MenuText.SOUND, new Position(72, 60), true));
+        _hauptmenu.add(
+                new ToggleMenuItem(MenuText.MUSIC, new Position(72, 80), true));
+        _hauptmenu.add(new MenuItem(MenuText.CLOSE, new Position(72, 100)));
 
         //Dies sind die Schriftz�ge des Pausenmen�s
-        _pausemenu.add(new MenuItem("Resume", new Position(70, 20)));
-        _pausemenu.add(sound);
-        _pausemenu.add(music);
-        _pausemenu.add(new MenuItem("Close", new Position(72, 100)));
+        _pausemenu.add(new MenuItem(MenuText.RESUME, new Position(70, 20)));
+        _pausemenu.add(
+                new ToggleMenuItem(MenuText.SOUND, new Position(72, 60), true));
+        _pausemenu.add(
+                new ToggleMenuItem(MenuText.MUSIC, new Position(72, 80), true));
+        _pausemenu.add(new MenuItem(MenuText.CLOSE, new Position(72, 100)));
     }
 
     public void paint(Graphics g)
@@ -95,23 +94,23 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         // draw title image border
         alwaysPaintTHIS(g);
 
-        if (_currentState == GameState.PLAYING)
+        if (_gameState == GameState.PLAYING)
         {
             paintSnakeAndCookies(g);
         }
 
         //Menu zeichnen
-        if (_currentState == GameState.MENU)
+        if (_gameState == GameState.MENU)
         {
             _hauptmenu.paint(g);
         }
 
-        if (_currentState == GameState.PAUSE)
+        if (_gameState == GameState.PAUSE)
         {
             _pausemenu.paint(g);
         }
 
-        if (_currentState == GameState.GAMEOVER)
+        if (_gameState == GameState.GAMEOVER)
         {
             paintSnakeAndCookies(g);
 
@@ -172,7 +171,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private void update()
     {
-        if (_currentState == GameState.PLAYING)
+        if (_gameState == GameState.PLAYING)
         {
             _snake.update();
             _sebastian.update();
@@ -181,7 +180,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         if (_snake.getState() == SnakeState.DEAD)
         {
-            _currentState = GameState.GAMEOVER;
+            _gameState = GameState.GAMEOVER;
         }
     }
 
@@ -208,17 +207,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     {
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
-        _currentState = GameState.PLAYING;
+        _gameState = GameState.PLAYING;
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        _lastState = _currentState;
-
-        System.out.println("State: " + _currentState + " Key:"
-                + KeyEvent.getKeyText(e.getKeyCode()));
-        if (_lastState == GameState.MENU)
+        if (_gameState == GameState.MENU)
         {
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
@@ -232,42 +227,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER)
             {
-                MenuItem menuItem = _hauptmenu.getSelectedItem();
-
-                switch (menuItem.getText())
-                {
-                case "Start Game":
-
-                    newGame();
-                    break;
-                case "Highscore":
-                    break;
-                case "Sound":
-                    AudioStore.toggleSoundeffects();
-                    ((ToggleMenuItem) menuItem).toggle();
-                    break;
-                case "Music":
-                    AudioStore.toggleMusic();
-                    ((ToggleMenuItem) menuItem).toggle();
-                    break;
-                case "Close":
-                    closeGame();
-                    break;
-
-                default:
-                    break;
-                }
+                executeMenuSelectionFor(_hauptmenu);
             }
 
             repaint();
         }
-
-        if (_lastState == GameState.PAUSE)
+        else if (_gameState == GameState.PAUSE)
         {
-
             if (e.getKeyCode() == KeyEvent.VK_P)
             {
-                _currentState = GameState.PLAYING;
+                resumeGame();
             }
 
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
@@ -282,29 +251,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER)
             {
-                MenuItem menuItem = _pausemenu.getSelectedItem();
-
-                switch (menuItem.getText())
-                {
-                case "Resume":
-                    _currentState = GameState.PLAYING;
-                    break;
-                case "Sound":
-                    AudioStore.toggleSoundeffects();
-                    ((ToggleMenuItem) menuItem).toggle();
-                    break;
-                case "Music":
-                    AudioStore.toggleMusic();
-                    ((ToggleMenuItem) menuItem).toggle();
-                    break;
-                case "Close":
-                    closeGame();
-                    break;
-                }
+                executeMenuSelectionFor(_pausemenu);
             }
         }
-
-        if (_lastState == GameState.GAMEOVER)
+        else if (_gameState == GameState.GAMEOVER)
         {
             if (e.getKeyCode() == KeyEvent.VK_SPACE)
             {
@@ -312,44 +262,88 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 repaint();
             }
         }
-
-        if (_lastState == GameState.PLAYING)
-
+        else if (_gameState == GameState.PLAYING)
         {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             {
-                _snake.setMove(true);
                 _snake.setDirection(Direction.RIGHT);
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT)
             {
-                _snake.setMove(true);
                 _snake.setDirection(Direction.LEFT);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_UP)
             {
-                _snake.setMove(true);
                 _snake.setDirection(Direction.UP);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_DOWN)
             {
-                _snake.setMove(true);
                 _snake.setDirection(Direction.DOWN);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_P)
             {
-                _currentState = GameState.PAUSE;
+                pauseGame();
             }
-
         }
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
             closeGame();
         }
+    }
+
+    private void pauseGame()
+    {
+        _gameState = GameState.PAUSE;
+    }
+
+    private void executeMenuSelectionFor(GameMenu menu)
+    {
+        MenuItem menuItem = menu.getSelectedItem();
+
+        switch (menuItem.getText())
+        {
+        case STARTGAME:
+            newGame();
+            break;
+        case HIGHSCORE:
+            break;
+        case SOUND:
+            AudioStore.toggleSoundeffects();
+            toggleSoundMenuItems();
+            break;
+        case MUSIC:
+            AudioStore.toggleMusic();
+            toggleMusicMenuItems();
+            break;
+        case CLOSE:
+            closeGame();
+            break;
+        case RESUME:
+            resumeGame();
+        default:
+            break;
+        }
+    }
+
+    private void resumeGame()
+    {
+        _gameState = GameState.PLAYING;
+    }
+
+    private void toggleMusicMenuItems()
+    {
+        ((ToggleMenuItem) _hauptmenu.getMenuItemBy(MenuText.MUSIC)).toggle();
+        ((ToggleMenuItem) _pausemenu.getMenuItemBy(MenuText.MUSIC)).toggle();
+    }
+
+    private void toggleSoundMenuItems()
+    {
+        ((ToggleMenuItem) _hauptmenu.getMenuItemBy(MenuText.SOUND)).toggle();
+        ((ToggleMenuItem) _pausemenu.getMenuItemBy(MenuText.SOUND)).toggle();
     }
 
     private void closeGame()

@@ -1,10 +1,11 @@
-package snakegame;
+package snakegame.ui;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
 import snakegame.fachwert.Position;
+import snakegame.fachwert.enums.MenuText;
 
 public class MenuItem
 {
@@ -12,13 +13,13 @@ public class MenuItem
     protected static final int OFFSETY = 75;
     protected static final int OFFSETX = 25;
 
-    protected String _menuText;
+    protected MenuText _menuText;
     protected boolean _selected;
     protected Position _menuPosition;
 
-    public MenuItem(String menuText, Position position)
+    public MenuItem(MenuText text, Position position)
     {
-        _menuText = menuText;
+        _menuText = text;
         _menuPosition = position;
         _selected = false;
     }
@@ -32,12 +33,13 @@ public class MenuItem
         {
             g.setColor(Color.RED);
         }
-        g.drawString(_menuText, _menuPosition.getX() * GRIDSIZE + OFFSETX,
+        g.drawString(_menuText.getText(),
+                _menuPosition.getX() * GRIDSIZE + OFFSETX,
                 _menuPosition.getY() * GRIDSIZE + OFFSETY);
 
     }
 
-    public String getText()
+    public MenuText getText()
     {
         return _menuText;
     }
