@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -23,6 +24,7 @@ import snakegame.fachwert.enums.PictureName;
 import snakegame.fachwert.enums.SnakeState;
 import snakegame.material.snake.Snake;
 import snakegame.service.AudioStore;
+import snakegame.service.Highscore;
 import snakegame.service.ImageStore;
 import snakegame.service.ObjectManager;
 
@@ -45,6 +47,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private GameMenu _hauptmenu;
     private GameMenu _pausemenu;
 
+    private boolean _askForName;
+
+    private Highscore _highscore;
+
     public Gameplay()
     {
         _gameState = GameState.MENU;
@@ -57,6 +63,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
         // _food = new Food();
+        _askForName = true;
 
         _timer = new Timer(_delay, this);
         AudioStore.playMusic(AudioName.GOURMETRACE);
@@ -181,6 +188,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (_snake.getState() == SnakeState.DEAD)
         {
             _gameState = GameState.GAMEOVER;
+            if (_askForName)
+            {
+                String eingabe = JOptionPane.showInputDialog(null,
+                        "Whats your name?", "name?", JOptionPane.PLAIN_MESSAGE);
+                _askForName = false;
+                _highscore.addNewEntry(eingabe, _sebastian.getScore());
+            }
         }
     }
 
@@ -208,6 +222,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _snake = new Snake(_startposition);
         _sebastian = new ObjectManager(_snake);
         _gameState = GameState.PLAYING;
+        _askForName = true;
     }
 
     @Override

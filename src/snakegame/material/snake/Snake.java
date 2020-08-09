@@ -209,6 +209,7 @@ public class Snake implements Paintable
     public void dies()
     {
         _state = SnakeState.DEAD;
+
     }
 
     public void setState(SnakeState state)

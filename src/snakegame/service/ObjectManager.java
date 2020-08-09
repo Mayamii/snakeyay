@@ -19,7 +19,7 @@ public class ObjectManager
     private Snake _snake;
     ArrayList<Food> _foodlist;
 
-    //später noch andere foods und Labyrinth
+    //spï¿½ter noch andere foods und Labyrinth
 
     public ObjectManager(Snake sneek)
     {
@@ -60,8 +60,8 @@ public class ObjectManager
     {
 
         int i = randomInt();
-        //prozente für Foodwahrscheinlichkeit
-        // alle foods zusammen müssen 100 ergeben!!!
+        //prozente fï¿½r Foodwahrscheinlichkeit
+        // alle foods zusammen mï¿½ssen 100 ergeben!!!
         int normalfood = 50;
         int superfood = 10;
         int invinciblefood = 15;
@@ -95,8 +95,8 @@ public class ObjectManager
     private void addRandomBadFood()
     {
         int i = randomInt();
-        //prozente für Foodwahrscheinlichkeit
-        // alle foods zusammen müssen 100 ergeben!!!
+        //prozente fï¿½r Foodwahrscheinlichkeit
+        // alle foods zusammen mï¿½ssen 100 ergeben!!!
         int ewwfood = 40;
         int fastfood = 40;
         int inversefood = 20;
@@ -192,6 +192,11 @@ public class ObjectManager
         }
         checkFoodCollision();
 
+    }
+
+    public int getScore()
+    {
+        return _snake.getScore();
     }
 
 }
