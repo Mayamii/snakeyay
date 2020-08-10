@@ -7,7 +7,6 @@ public class SnakeTest
     @Test
     public void testeEats()
     {
-        Snake snake = Snake.get();
 
     }
 
