@@ -39,18 +39,20 @@ public class Highscore
     {
         try (FileReader reader = new FileReader(_filename))
         {
-            BufferedReader br=new BufferedReader(reader);
-            StringBuffer sb=new StringBuffer();    
-            String line;  
-            while((line=br.readLine())!=null)  
-            {  
-                String[] eingabe =line.split(";");
-            
-              _scores.add(new ScoreEntry(eingabe[0], Integer.parseInt(eingabe[1])));
-            }  
+            BufferedReader br = new BufferedReader(reader);
+            StringBuffer sb = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null)
+            {
+                String[] eingabe = line.split(";");
+
+                _scores.add(new ScoreEntry(eingabe[0],
+                        Integer.parseInt(eingabe[1])));
+            }
         }
         catch (IOException e)
         {
             System.out.println(e.getMessage());
         }
+    }
 }
