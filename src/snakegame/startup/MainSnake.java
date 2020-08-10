@@ -1,6 +1,11 @@
 package snakegame.startup;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -10,6 +15,17 @@ public class MainSnake
 {
     public static void main(String[] args)
     {
+        try
+        {
+            GraphicsEnvironment ge = GraphicsEnvironment
+                .getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,
+                    new File("./8-bit Arcade In.ttf")));
+        }
+        catch (IOException | FontFormatException e)
+        {
+            //Handle exception
+        }
         JFrame frame = new JFrame();
         Gameplay _gameplay = new Gameplay();
         frame.setLocationRelativeTo(null);
@@ -21,5 +37,6 @@ public class MainSnake
             .add(_gameplay);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 }

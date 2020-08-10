@@ -7,17 +7,38 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import snakegame.fachwert.enums.GameState;
 import snakegame.material.ScoreEntry;
 
 public class Highscore
 {
     private final String _filename = "./Highscore.txt";
     private ArrayList<ScoreEntry> _scores = new ArrayList<>();
+    GameState _oldGameState;
+
+    public Highscore()
+    {
+        readScoreFromFile();
+    }
 
     public void addNewEntry(String name, int score)
     {
-        _scores.add(new ScoreEntry(name, score));
+        if (checkName(name))
+        {
+            _scores.add(new ScoreEntry(name, score));
+        }
+        else
+        {
+            _scores.add(new ScoreEntry("IDIOT", score));
+        }
         Collections.sort(_scores);
+        writeScoretoFile();
+    }
+
+    private boolean checkName(String name)
+    {
+        return (name.matches("^[a-zA-Z]{1,10}$"));
+
     }
 
     void writeScoretoFile()
@@ -39,18 +60,35 @@ public class Highscore
     {
         try (FileReader reader = new FileReader(_filename))
         {
-            BufferedReader br=new BufferedReader(reader);
-            StringBuffer sb=new StringBuffer();    
-            String line;  
-            while((line=br.readLine())!=null)  
-            {  
-                String[] eingabe =line.split(";");
-            
-              _scores.add(new ScoreEntry(eingabe[0], Integer.parseInt(eingabe[1])));
-            }  
+            BufferedReader br = new BufferedReader(reader);
+            StringBuffer sb = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null)
+            {
+                String[] eingabe = line.split(";");
+
+                _scores.add(new ScoreEntry(eingabe[0],
+                        Integer.parseInt(eingabe[1])));
+            }
         }
         catch (IOException e)
         {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void setGameState(GameState gamestate)
+    {
+        _oldGameState = gamestate;
+    }
+
+    public GameState getGameState()
+    {
+        return _oldGameState;
+    }
+
+    public ScoreEntry getScore(int i)
+    {
+        return _scores.get(i);
+    }
 }

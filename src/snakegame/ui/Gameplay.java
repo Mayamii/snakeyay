@@ -46,6 +46,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private GameMenu _hauptmenu;
     private GameMenu _pausemenu;
+    private HighscoreMenu _highscoremenu;
 
     private boolean _askForName;
 
@@ -64,6 +65,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         _sebastian = new ObjectManager(_snake);
         // _food = new Food();
         _askForName = true;
+        _highscore = new Highscore();
+        _highscoremenu = new HighscoreMenu(_highscore);
 
         _timer = new Timer(_delay, this);
         AudioStore.playMusic(AudioName.GOURMETRACE);
@@ -80,7 +83,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         // Die Schriftzüge sollen mitten in dem grünen Rechteck angezeigt werden
         _hauptmenu.add(new MenuItem(MenuText.STARTGAME, new Position(70, 20)));
-        //        _hauptmenu.add(new MenuItem("Highscore ", new Position(71, 40)));
+        _hauptmenu.add(new MenuItem(MenuText.HIGHSCORE, new Position(71, 40)));
         _hauptmenu.add(
                 new ToggleMenuItem(MenuText.SOUND, new Position(72, 60), true));
         _hauptmenu.add(
@@ -89,11 +92,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
         //Dies sind die Schriftz�ge des Pausenmen�s
         _pausemenu.add(new MenuItem(MenuText.RESUME, new Position(70, 20)));
+        _pausemenu.add(new MenuItem(MenuText.HIGHSCORE, new Position(71, 40)));
         _pausemenu.add(
                 new ToggleMenuItem(MenuText.SOUND, new Position(72, 60), true));
         _pausemenu.add(
                 new ToggleMenuItem(MenuText.MUSIC, new Position(72, 80), true));
         _pausemenu.add(new MenuItem(MenuText.CLOSE, new Position(72, 100)));
+
     }
 
     public void paint(Graphics g)
@@ -127,6 +132,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
             g.setFont(new Font("arial", Font.BOLD, 20));
             g.drawString("Press Space to restart", 350, 340);
+        }
+        if (_gameState == GameState.HIGHSCORE)
+        {
+            _highscoremenu.paint(g);
         }
 
         g.dispose();
@@ -191,7 +200,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             if (_askForName)
             {
                 String eingabe = JOptionPane.showInputDialog(null,
-                        "Whats your name?", "name?", JOptionPane.PLAIN_MESSAGE);
+                        "Whats your name?", "Name?", JOptionPane.PLAIN_MESSAGE);
                 _askForName = false;
                 _highscore.addNewEntry(eingabe, _sebastian.getScore());
             }
@@ -303,6 +312,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 pauseGame();
             }
         }
+        else if (_gameState == GameState.HIGHSCORE)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                _gameState = _highscore.getGameState();
+            }
+        }
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
@@ -325,6 +341,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             newGame();
             break;
         case HIGHSCORE:
+            showHighscore();
             break;
         case SOUND:
             AudioStore.toggleSoundeffects();
@@ -344,9 +361,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }
     }
 
+    private void showHighscore()
+    {
+        _highscore.setGameState(_gameState);
+        _gameState = GameState.HIGHSCORE;
+
+    }
+
     private void resumeGame()
     {
         _gameState = GameState.PLAYING;
+
     }
 
     private void toggleMusicMenuItems()
