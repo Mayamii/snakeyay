@@ -14,6 +14,7 @@ public class HeadTest
         Position positionHead = new Position(5, 5);
         Head head1 = new Head(positionHead);
         assertTrue(6 == Head.move());
+        assertEquals();
     }
 
     @Test
