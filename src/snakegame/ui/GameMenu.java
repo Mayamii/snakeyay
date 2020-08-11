@@ -17,13 +17,11 @@ public class GameMenu
 
     private ImageIcon _image;
     private Position _linksOben;
-    private Position _rechtsUnten;
     List<MenuItem> _menuItems = new ArrayList<MenuItem>();
 
     public GameMenu(Position linksOben, Position rechtsUnten)
     {
         _linksOben = linksOben;
-        _rechtsUnten = rechtsUnten;
         _image = ImageStore.getImage(PictureName.MENU);
 
     }

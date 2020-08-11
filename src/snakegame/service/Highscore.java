@@ -61,7 +61,6 @@ public class Highscore
         try (FileReader reader = new FileReader(_filename))
         {
             BufferedReader br = new BufferedReader(reader);
-            StringBuffer sb = new StringBuffer();
             String line;
             while ((line = br.readLine()) != null)
             {
