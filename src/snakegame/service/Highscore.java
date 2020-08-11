@@ -37,7 +37,7 @@ public class Highscore
 
     private boolean checkName(String name)
     {
-        return (name.matches("^[a-zA-Z]{1,10}$"));
+        return (name.matches("^[a-zA-Z]{1,8}$"));
 
     }
 

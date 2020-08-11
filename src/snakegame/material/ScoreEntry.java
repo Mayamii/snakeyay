@@ -50,8 +50,8 @@ public class ScoreEntry implements Comparable<ScoreEntry>
         g.setColor(Color.WHITE);
         //hier kann man das Layout der Schrift des Menus
         g.setFont(Util.MENUFONT);
-
-        g.drawString(rank + " " + getFormatString(), x, y);
+        //wenn man noch rank dazu haben will das einfügen: rank + " " + (sah hässlich aus, daher rausgenommen)
+        g.drawString(getFormatString(), x, y);
 
     }
 }

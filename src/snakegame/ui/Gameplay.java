@@ -76,10 +76,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
     private void createMenus()
     {
-        _hauptmenu = new GameMenu(new Position(10, 10), new Position(20, 20),
-                Color.BLUE);
-        _pausemenu = new GameMenu(new Position(10, 10), new Position(20, 20),
-                Color.GREEN);
+        _hauptmenu = new GameMenu(new Position(248, 100), new Position(30, 30));
+        _pausemenu = new GameMenu(new Position(248, 100), new Position(30, 30));
 
         // Die Schriftzüge sollen mitten in dem grünen Rechteck angezeigt werden
         _hauptmenu.add(new MenuItem(MenuText.STARTGAME, new Position(70, 20)));
@@ -114,12 +112,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         //Menu zeichnen
         if (_gameState == GameState.MENU)
         {
-            _hauptmenu.paint(g);
+            _hauptmenu.paint(g, this);
         }
 
         if (_gameState == GameState.PAUSE)
         {
-            _pausemenu.paint(g);
+            _pausemenu.paint(g, this);
         }
 
         if (_gameState == GameState.GAMEOVER)
@@ -135,7 +133,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }
         if (_gameState == GameState.HIGHSCORE)
         {
-            _highscoremenu.paint(g);
+
+            _highscoremenu.paint(g, this);
         }
 
         g.dispose();

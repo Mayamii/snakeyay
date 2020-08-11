@@ -1,27 +1,30 @@
 package snakegame.ui;
 
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import snakegame.fachwert.Position;
 import snakegame.fachwert.enums.MenuText;
+import snakegame.fachwert.enums.PictureName;
+import snakegame.service.ImageStore;
 
 public class GameMenu
 {
 
-    private Color _color;
+    private ImageIcon _image;
     private Position _linksOben;
     private Position _rechtsUnten;
     List<MenuItem> _menuItems = new ArrayList<MenuItem>();
 
-    public GameMenu(Position linksOben, Position rechtsUnten,
-            Color hintergrundfarbe)
+    public GameMenu(Position linksOben, Position rechtsUnten)
     {
         _linksOben = linksOben;
         _rechtsUnten = rechtsUnten;
-        _color = hintergrundfarbe;
+        _image = ImageStore.getImage(PictureName.MENU);
 
     }
 
@@ -34,16 +37,12 @@ public class GameMenu
         _menuItems.add(newItem);
     }
 
-    public void paint(Graphics g)
+    public void paint(Graphics g, Component c)
     {
-        g.setColor(_color);
+        _image.paintIcon(c, g, _linksOben.getX(), _linksOben.getY());
+
         //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 f�r den linken Rand und 850-200 f�r die rechte Begrenzung
-        g.drawRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
-                (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
-                (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
-        g.fillRect(_linksOben.getX() * 20 + 25, _linksOben.getY() * 5 + 25,
-                (_rechtsUnten.getX() - _linksOben.getX()) * 40 + 50,
-                (_rechtsUnten.getY() - _linksOben.getY()) * 50 + 75);
+
         for (MenuItem menuItem : _menuItems)
         {
             menuItem.paint(g);

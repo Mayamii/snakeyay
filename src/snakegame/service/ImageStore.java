@@ -39,6 +39,8 @@ public class ImageStore
         _images.put(PictureName.WOWRIGHT, new ImageIcon("wowrightmouth.png"));
         _images.put(PictureName.WOWDOWN, new ImageIcon("wowdownmouth.png"));
         _images.put(PictureName.WOWLEFT, new ImageIcon("wowleftmouth.png"));
+        _images.put(PictureName.HIGHSCORE, new ImageIcon("highscore.png"));
+        _images.put(PictureName.MENU, new ImageIcon("pausemenu.png"));
     }
 
     public static ImageIcon getImage(PictureName key)
