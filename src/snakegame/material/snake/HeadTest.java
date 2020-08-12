@@ -28,6 +28,12 @@ public class HeadTest
     }
 
     @Test
+    public void testeHeadKonstruktor()
+    {
+
+    }
+
+    @Test
     public void testeMoveDirectionUp()
     {
         Direction direction = Direction.RIGHT;

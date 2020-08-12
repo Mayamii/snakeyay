@@ -10,4 +10,16 @@ public class SnakeTest
 
     }
 
+    @Test
+    public void testeSubstractingScore()
+    {
+
+    }
+
+    @Test
+    public void testeUpdate()
+    {
+
+    }
+
 }
