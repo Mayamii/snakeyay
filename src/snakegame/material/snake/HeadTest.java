@@ -22,49 +22,69 @@ public class HeadTest
 
         Direction direction = Direction.RIGHT;
         Position positionHead = new Position(5, 5);
-        Position positionHeadAfterMove = new Position(6, 5);
         Head head1 = new Head(positionHead);
-        assertTrue(positionHeadAfterMove == head1.move());
+        head1.setDirection(direction);
+
+        head1.move();
+
+        Position newPosition = head1.getPosition();
+        assertEquals(newPosition.getX(), 6);
+        assertEquals(newPosition.getY(), 5);
+
     }
 
     @Test
+    /*
+     * @TO DO Test läuft schief, obwohl die Werte stimmen. Ist die Methode falsch?
+     */
     public void testeMoveDirectionLeft()
     {
+
         Direction direction = Direction.LEFT;
         Position positionHead = new Position(5, 5);
         Head head1 = new Head(positionHead);
-        assertTrue(Head.move();
+        head1.setDirection(direction);
+
+        head1.move();
+
+        Position newPosition = head1.getPosition();
+        assertEquals(newPosition.getX(), 4);
+        assertEquals(newPosition.getY(), 5);
 
     }
 
     @Test
     public void testeMoveDirectionUp()
     {
-        Direction direction = Direction.RIGHT;
+
+        Direction direction = Direction.UP;
         Position positionHead = new Position(5, 5);
         Head head1 = new Head(positionHead);
-        assertEquals(6, positionHead.move()
-            .direction());
+        head1.setDirection(direction);
+
+        head1.move();
+
+        Position newPosition = head1.getPosition();
+        assertEquals(newPosition.getX(), 5);
+        assertEquals(newPosition.getY(), 4);
+
     }
 
     @Test
     public void testeMoveDirectionDown()
     {
-        Direction direction = Direction.RIGHT;
-        Position positionHead = new Position(5, 5);
-        Head head1 = new Head(positionHead);
-        assertEquals(6, positionHead.move()
-            .direction());
-    }
 
-    @Test
-    public void testeMoveDirectionValueNotInCase()
-    {
-        Direction direction = Direction.RIGHT;
+        Direction direction = Direction.DOWN;
         Position positionHead = new Position(5, 5);
         Head head1 = new Head(positionHead);
-        assertEquals(6, positionHead.move()
-            .direction());
+        head1.setDirection(direction);
+
+        head1.move();
+
+        Position newPosition = head1.getPosition();
+        assertEquals(newPosition.getX(), 5);
+        assertEquals(newPosition.getY(), 6);
+
     }
 
 }

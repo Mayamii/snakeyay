@@ -9,9 +9,12 @@ public class PositionTest
     @Test
     public void testemoveUp()
     {
-        Position position1 = new Position(5, 5);
-        assertEquals(4, position1.moveUp()
-            .getY());
+        Position position = new Position(5, 5);
+
+        Position position1 = position.moveUp();
+
+        assertEquals(position1.getY(), 4);
+
     }
 
     @Test
