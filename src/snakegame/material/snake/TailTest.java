@@ -28,19 +28,6 @@ public class TailTest
         body.getLength();
     }
 
-    @Test
-    public void testeSetGod()
-    {
-        Position pos = new Position(5, 5);
-        ImageIcon img = new ImageIcon();
-        Tail tail = new Tail(pos, img);
-        boolean godmode = true;
-        boolean val;
-
-        tail.setGod(godmode);
-
-        assertEquals(, true);
-
     }
 
     @Test
