@@ -16,19 +16,20 @@ public class HeadTest
 
     }
 
-    /* @Test
+    @Test
     public void testeSetGod()
     {
         Position pos = new Position(5, 5);
         Head head = new Head(pos);
         boolean godmode = true;
         boolean val;
-    
+
         head.setGod(godmode);
-        Head newHead = head.getBoolean();
-    
-        assertEquals(newHead, true);
-        */
+        // hier weiﬂ ich nicht wie man das in Boolean bekommen soll
+        // Boolean newHead = head.setGod(godmode);
+
+        //assertEquals(newHead, true);
+    }
 
     @Test
     public void testeMoveDirectionRight()
