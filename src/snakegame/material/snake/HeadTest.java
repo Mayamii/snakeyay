@@ -34,12 +34,8 @@ public class HeadTest
     }
 
     @Test
-    /*
-     * @TO DO Test läuft schief, obwohl die Werte stimmen. Ist die Methode falsch?
-     */
     public void testeMoveDirectionLeft()
     {
-
         Direction direction = Direction.LEFT;
         Position positionHead = new Position(5, 5);
         Head head1 = new Head(positionHead);
@@ -48,9 +44,11 @@ public class HeadTest
         head1.move();
 
         Position newPosition = head1.getPosition();
-        assertEquals(newPosition.getX(), 4);
+        // Die default Richtung ist RIGHT
+        //left ist nicht möglich, weil kein U-Turn erlaubt ist
+        // deshalb läuft die Schlange weiter nach rechts
+        assertEquals(newPosition.getX(), 6);
         assertEquals(newPosition.getY(), 5);
-
     }
 
     @Test
@@ -73,7 +71,6 @@ public class HeadTest
     @Test
     public void testeMoveDirectionDown()
     {
-
         Direction direction = Direction.DOWN;
         Position positionHead = new Position(5, 5);
         Head head1 = new Head(positionHead);
@@ -84,7 +81,6 @@ public class HeadTest
         Position newPosition = head1.getPosition();
         assertEquals(newPosition.getX(), 5);
         assertEquals(newPosition.getY(), 6);
-
     }
 
 }

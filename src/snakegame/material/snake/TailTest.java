@@ -4,10 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
 
+import javax.swing.ImageIcon;
+
 import org.junit.Test;
 
 import snakegame.fachwert.Position;
-import snakegame.fachwert.enums.Direction;
 
 public class TailTest
 {
@@ -25,17 +26,21 @@ public class TailTest
         body = new LinkedList<>();
 
         body.getLength();
-
     }
 
     @Test
     public void testeSetGod()
     {
+        Position pos = new Position(5, 5);
+        ImageIcon img = new ImageIcon();
+        Tail tail = new Tail(pos, img);
         boolean godmode = true;
-        return setGod(godmode);
-        
+        boolean val;
+
+        tail.setGod(godmode);
+
         assertEquals(, true);
-       
+
     }
 
     @Test
