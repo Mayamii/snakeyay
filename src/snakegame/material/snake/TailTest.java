@@ -2,8 +2,6 @@ package snakegame.material.snake;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.LinkedList;
-
 import javax.swing.ImageIcon;
 
 import org.junit.Test;
@@ -35,25 +33,16 @@ public class TailTest
         ImageIcon img = new ImageIcon();
         Tail tail = new Tail(pos, img);
         int expectedLength = 5;
-        int howMuchGrow = 5;
-
+        int howMuchGrow = 3;
         tail.growenable(howMuchGrow);
+        for (int i = howMuchGrow; i > 0; i--)
+        {
+            tail.update();
+        }
 
         int newLength = tail.getLength();
         assertEquals(expectedLength, newLength);
 
     }
-
-    // funktioniert nicht
-    @Test
-    public void testeGrows()
-    {
-        Position pos = new Position(5, 5);
-        ImageIcon img = new ImageIcon();
-        Tail tail = new Tail(pos, img); 
-        
-        tail.grows();
-        
-        assertEquals();
 
 }

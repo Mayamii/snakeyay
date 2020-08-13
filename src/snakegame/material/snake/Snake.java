@@ -18,7 +18,7 @@ public class Snake implements Paintable
     private Tail _tail;
     private int _score;
     private SnakeState _state;
-    private int _updateCounter;
+    private int _effectDuration;
 
     public Snake(Position pos)
     {
@@ -26,7 +26,7 @@ public class Snake implements Paintable
         _tail = new Tail(pos, ImageStore.getImage(PictureName.SNAKEBODY));
         _score = 0;
         _state = SnakeState.ALIVE;
-        _updateCounter = 0;
+        _effectDuration = 0;
     }
 
     public int getLength()
@@ -37,7 +37,7 @@ public class Snake implements Paintable
     public void eats(Food food)
     {
         Effect effect = food.getEffect();
-        if (_updateCounter == 0)
+        if (_effectDuration == 0)
         {
             switch (effect)
             {
@@ -49,7 +49,7 @@ public class Snake implements Paintable
                 _score++;
                 _tail.growenable(1);
                 _state = SnakeState.INVERTED;
-                _updateCounter = 30;
+                _effectDuration = 30;
                 break;
             case SUPER:
                 _score += 3;
@@ -58,19 +58,19 @@ public class Snake implements Paintable
                 _score += 3;
                 _tail.growenable(1);
                 _state = SnakeState.INVINCIBLE;
-                _updateCounter = 50;
+                _effectDuration = 50;
                 break;
             case SLOW:
                 _score++;
                 _tail.growenable(1);
                 _state = SnakeState.SLOW;
-                _updateCounter = 20;
+                _effectDuration = 20;
                 break;
             case FAST:
                 _score++;
                 _tail.growenable(3);
                 _state = SnakeState.FAST;
-                _updateCounter = 60;
+                _effectDuration = 60;
 
                 break;
             case EWW:
@@ -160,9 +160,9 @@ public class Snake implements Paintable
         _tail.update();
         _head.update();
 
-        if (_updateCounter > 0)
+        if (_effectDuration > 0)
         {
-            _updateCounter--;
+            _effectDuration--;
         }
         else
         {
@@ -196,14 +196,14 @@ public class Snake implements Paintable
         _head.setDirection(dir);
     }
 
-    public int getBodyX(int bodymassindex)
+    public int getBodyX(int bodyindex)
     {
-        return _tail.getBodyX(bodymassindex);
+        return _tail.getBodyX(bodyindex);
     }
 
-    public int getBodyY(int bodymassindex)
+    public int getBodyY(int bodyindex)
     {
-        return _tail.getBodyY(bodymassindex);
+        return _tail.getBodyY(bodyindex);
     }
 
     public void dies()
@@ -220,6 +220,11 @@ public class Snake implements Paintable
     public SnakeState getState()
     {
         return _state;
+    }
+
+    public int getEffectDuration()
+    {
+        return _effectDuration;
     }
 
 }

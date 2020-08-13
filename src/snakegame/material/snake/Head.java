@@ -102,4 +102,10 @@ public class Head extends AbstractPaintable
         move();
     }
 
+    public boolean getGod()
+    {
+        return _godmode;
+
+    }
+
 }

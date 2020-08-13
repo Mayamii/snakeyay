@@ -44,4 +44,9 @@ public abstract class AbstractPaintable implements Paintable
         return _position;
     }
 
+    public ImageIcon getImage()
+    {
+        return _image;
+
+    }
 }
