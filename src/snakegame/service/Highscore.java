@@ -29,7 +29,7 @@ public class Highscore
         }
         else
         {
-            _scores.add(new ScoreEntry("IDIOT", score));
+            _scores.add(new ScoreEntry("anonym", score));
         }
         Collections.sort(_scores);
         writeScoretoFile();
@@ -37,6 +37,11 @@ public class Highscore
 
     private boolean checkName(String name)
     {
+        if (name == null)
+        {
+            return false;
+        }
+
         return (name.matches("^[a-zA-Z]{1,8}$"));
 
     }
@@ -75,5 +80,20 @@ public class Highscore
         {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void setGameState(GameState gamestate)
+    {
+        _oldGameState = gamestate;
+    }
+
+    public GameState getGameState()
+    {
+        return _oldGameState;
+    }
+
+    public ScoreEntry getScore(int i)
+    {
+        return _scores.get(i);
     }
 }

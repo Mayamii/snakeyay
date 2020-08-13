@@ -36,7 +36,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private static final long serialVersionUID = 1L;
 
     private Snake _snake;
-    private ObjectManager _sebastian;
+    private ObjectManager _objectmanager;
     private Position _startposition;
 
     GameState _gameState;
@@ -62,7 +62,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         createMenus();
 
         _snake = new Snake(_startposition);
-        _sebastian = new ObjectManager(_snake);
+        _objectmanager = new ObjectManager(_snake);
         // _food = new Food();
         _askForName = true;
         _highscore = new Highscore();
@@ -144,9 +144,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     {
         _snake.paint(g, this);
 
-        for (int i = 0; i < _sebastian.getLengthList(); i++)
+        for (int i = 0; i < _objectmanager.getLengthList(); i++)
         {
-            _sebastian.returnFood(i)
+            _objectmanager.returnFood(i)
                 .paint(g, this);
         }
     }
@@ -189,7 +189,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         if (_gameState == GameState.PLAYING)
         {
             _snake.update();
-            _sebastian.update();
+            _objectmanager.update();
             updateDelay();
         }
 
@@ -201,7 +201,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
                 String eingabe = JOptionPane.showInputDialog(null,
                         "Whats your name?", "Name?", JOptionPane.PLAIN_MESSAGE);
                 _askForName = false;
-                _highscore.addNewEntry(eingabe, _sebastian.getScore());
+                _highscore.addNewEntry(eingabe, _objectmanager.getScore());
             }
         }
     }
@@ -228,7 +228,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     private void newGame()
     {
         _snake = new Snake(_startposition);
-        _sebastian = new ObjectManager(_snake);
+        _objectmanager = new ObjectManager(_snake);
         _gameState = GameState.PLAYING;
         _askForName = true;
     }
