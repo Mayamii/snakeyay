@@ -61,6 +61,7 @@ public class Highscore
         try (FileReader reader = new FileReader(_filename))
         {
             BufferedReader br = new BufferedReader(reader);
+
             String line;
             while ((line = br.readLine()) != null)
             {
@@ -74,20 +75,5 @@ public class Highscore
         {
             System.out.println(e.getMessage());
         }
-    }
-
-    public void setGameState(GameState gamestate)
-    {
-        _oldGameState = gamestate;
-    }
-
-    public GameState getGameState()
-    {
-        return _oldGameState;
-    }
-
-    public ScoreEntry getScore(int i)
-    {
-        return _scores.get(i);
     }
 }
