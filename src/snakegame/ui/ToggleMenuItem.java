@@ -1,7 +1,6 @@
 package snakegame.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 
 import snakegame.fachwert.Position;
@@ -21,7 +20,7 @@ public class ToggleMenuItem extends MenuItem
     {
         g.setColor(Color.WHITE);
         //hier kann man das Layout der Schrift des Menus
-        g.setFont(new Font("arial", Font.BOLD, 30));
+        g.setFont(Util.MENUFONT);
         if (_selected)
         {
             g.setColor(Color.RED);
@@ -39,7 +38,7 @@ public class ToggleMenuItem extends MenuItem
 
     private String formatiereAusgabe()
     {
-        return String.format("%s: %s", _menuText.getText(),
+        return String.format("%s  %s", _menuText.getText(),
                 _isOn ? "ON" : "OFF");
     }
 }

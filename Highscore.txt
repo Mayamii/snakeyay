@@ -2,4 +2,4 @@ Maya;10
 Marie;8
 Johanna;6
 Fred;4
-Jujo;2
+Daniel;2
