@@ -10,9 +10,14 @@ import snakegame.fachwert.enums.Direction;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.service.ImageStore;
 
+/*
+ * Testklasse zum Testen der Methoden und des Konstruktors der Klasse Head
+ */
 public class HeadTest
 {
-
+    /*
+     * Testet den Konstruktor der Head-Klasse
+     */
     @Test
     public void testeHeadKonstruktor()
     {
@@ -30,6 +35,9 @@ public class HeadTest
 
     }
 
+    /*
+     * Testet die Methode setGod
+     */
     @Test
     public void testeSetGod()
     {
@@ -41,6 +49,9 @@ public class HeadTest
         assertEquals(head.getGod(), godmode);
     }
 
+    /*
+     * Testet die Methode move
+     */
     @Test
     public void testeMove()
     {
@@ -79,6 +90,9 @@ public class HeadTest
 
     }
 
+    /*
+     * Testet die Methode getDirection
+     */
     @Test
     public void testeGetDirection()
     {

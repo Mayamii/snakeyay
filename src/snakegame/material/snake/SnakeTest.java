@@ -14,8 +14,14 @@ import snakegame.material.food.NormalFood;
 import snakegame.material.food.SlowFood;
 import snakegame.material.food.SuperFood;
 
+/*
+ * Testklasse zum Testen der Methoden der Klasse Snake
+ */
 public class SnakeTest
 {
+    /*
+     * Testet die eats Methode
+     */
     @Test
     public void testeEats()
     {

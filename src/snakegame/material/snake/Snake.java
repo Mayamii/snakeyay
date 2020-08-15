@@ -12,6 +12,10 @@ import snakegame.material.Paintable;
 import snakegame.material.food.Food;
 import snakegame.service.ImageStore;
 
+/*
+ * Die Klasse Snake enthält alle Methoden und Variablen,
+ * die die Schlange und ihren Status, Kopf- und Schwanz, Punktzahl betreffen.
+ */
 public class Snake implements Paintable
 {
     private Head _head;
@@ -20,6 +24,10 @@ public class Snake implements Paintable
     private SnakeState _state;
     private int _effectDuration;
 
+    /*
+     * Erstellt eine Schlange an der Position pos
+     * @param pos Positionen der Schlange
+     */
     public Snake(Position pos)
     {
         _head = new Head(pos);
@@ -29,11 +37,21 @@ public class Snake implements Paintable
         _effectDuration = 0;
     }
 
+    /*
+     * @return die Länge der Schlange
+     */
     public int getLength()
     {
         return _tail.getLength() + 1;
     }
 
+    /*
+     * Eats definiert das Verhalten der Schlange wenn sie Essen 
+     * mit unterschiedlichen Effekten frisst.
+     * Die Punktzahl sowie die Länge werden verändert.
+     * Bei manchem Funtkionen wird ebenfalls der Zustand geändert.
+     * Manche Effekte sind zeitlich begrenzt und die Dauer wird festgelegt.
+     */
     public void eats(Food food)
     {
         Effect effect = food.getEffect();
@@ -115,6 +133,9 @@ public class Snake implements Paintable
         }
     }
 
+    /*
+     * Zieht Punkte von der Punktzahl ab
+     */
     private void subtractingScore(int i)
     {
         if (_score > i)
@@ -127,16 +148,25 @@ public class Snake implements Paintable
         }
     }
 
+    /*
+     * @return liefert die x-Position des Kopfes der Schlange
+     */
     public int getHeadX()
     {
         return _head.getX();
     }
 
+    /*
+     * @return liefert die y-Position des Kopfes der Schlange
+     */
     public int getHeadY()
     {
         return _head.getY();
     }
 
+    /*
+     * Zeichnet Tail und Head der Schlange
+     */
     @Override
     public void paint(Graphics g, Component frame)
     {
@@ -144,12 +174,18 @@ public class Snake implements Paintable
         _tail.paint(g, frame);
     }
 
+    /*
+     * @return liefert den Status der Schlange
+     */
     public SnakeState getSnakeState()
     {
         return _state;
     }
 
     @Override
+    /*
+     * Update
+     */
     public void update()
     {
         _head.setGod(_state == SnakeState.INVINCIBLE);
@@ -170,23 +206,38 @@ public class Snake implements Paintable
         }
     }
 
+    /*
+     * @return den Punktestand
+     */
     public int getScore()
     {
         return _score;
     }
 
+    /*
+     * @return liefert die x-Position des Kopfes der Schlange
+     */
     @Override
     public int getX()
     {
         return getHeadX();
     }
 
+    /*
+     * @return liefert die y-Position des Kopfes der Schlange
+     */
     @Override
     public int getY()
     {
         return getHeadY();
     }
 
+    /*
+     * Legt die Richtung der Schlange fest.
+     * Falls der Spielzustand inverted ist, wird an der 
+     * Richtung die Methode inverse aufgerufen und kehrt die 
+     * Richtung um
+     */
     public void setDirection(Direction dir)
     {
         if (_state == SnakeState.INVERTED)
@@ -196,32 +247,53 @@ public class Snake implements Paintable
         _head.setDirection(dir);
     }
 
+    /*
+     * @return liefert die x-Positon des Schwanzes
+     */
     public int getBodyX(int bodyindex)
     {
         return _tail.getBodyX(bodyindex);
     }
 
+    /*
+     * @return liefert die y-Positon des Schwanzes
+     */
     public int getBodyY(int bodyindex)
     {
         return _tail.getBodyY(bodyindex);
     }
 
+    /*
+     * Die Schlange stirbt und der Zustand wird auf DEAD gesetzt.
+     */
     public void dies()
     {
         _state = SnakeState.DEAD;
 
     }
 
+    /*
+     * Der Zustand der Schlange wird gesetzt
+     * @param state der Zustand der Schlange
+     */
     public void setState(SnakeState state)
     {
         _state = state;
     }
 
+    /*
+     * Der Zustand der Schlange wird zurückgegeben
+     * @return Zustand der Schlange
+     */
     public SnakeState getState()
     {
         return _state;
     }
 
+    /*
+     * Die Dauer des Effects wird zurückgegeben
+     * @return die Dauer des Effekts
+     */
     public int getEffectDuration()
     {
         return _effectDuration;

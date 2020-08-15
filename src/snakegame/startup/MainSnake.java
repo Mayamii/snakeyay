@@ -11,6 +11,9 @@ import javax.swing.JFrame;
 
 import snakegame.ui.Gameplay;
 
+/*
+ * Hauptklasse des Snake-Spiels
+ */
 public class MainSnake
 {
     public static void main(String[] args)

@@ -9,6 +9,9 @@ import javax.sound.sampled.Clip;
 
 import snakegame.fachwert.enums.AudioName;
 
+/*
+ * Klasse AudioStore für die Audiodateien des Spiels
+ */
 public class AudioStore
 {
     private static HashMap<AudioName, File> _audios;
@@ -25,16 +28,26 @@ public class AudioStore
         _music = true;
     }
 
+    /*
+     * @param key AudioName
+     * @return gibt den Sound zurück
+     */
     public static File getSound(AudioName key)
     {
         return _audios.get(key);
     }
 
+    /*
+     * Schalter, der die SoundEffekte an- und ausschaltet
+     */
     public static void toggleSoundeffects()
     {
         _sound = !_sound;
     }
 
+    /*
+     * Schalter, der die Musik an- und ausschaltet
+     */
     public static void toggleMusic()
     {
         _music = !_music;
@@ -46,6 +59,9 @@ public class AudioStore
 
     }
 
+    /*
+     * Spielt die Sounds des Spiels ab
+     */
     public static void playAudio(AudioName sound)
     {
         if (!_sound)
@@ -67,6 +83,9 @@ public class AudioStore
         }
     }
 
+    /*
+     * Spielt die Musik des Spiels ab
+     */
     public static void playMusic(AudioName sound)
     {
         if (!_music)

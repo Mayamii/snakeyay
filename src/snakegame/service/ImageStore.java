@@ -6,11 +6,14 @@ import javax.swing.ImageIcon;
 
 import snakegame.fachwert.enums.PictureName;
 
+/*
+ * Klasse ImageStore zum Ablegen der Bilder
+ */
 public class ImageStore
 {
     private static HashMap<PictureName, ImageIcon> _images;
-    //TEST
-    //das macht dass die Klasse nicht erzeugt werden muss und trotzdem den (static) Konstruktor aufruft und die Variabeln initialisiert
+    //das macht dass die Klasse nicht erzeugt werden muss und 
+    //trotzdem den (static) Konstruktor aufruft und die Variabeln initialisiert
     static
     {
         _images = new HashMap<>();
@@ -43,6 +46,10 @@ public class ImageStore
         _images.put(PictureName.MENU, new ImageIcon("pausemenu.png"));
     }
 
+    /*
+     * @param key PictureName
+     * @return Image
+     */
     public static ImageIcon getImage(PictureName key)
     {
         return _images.get(key);
