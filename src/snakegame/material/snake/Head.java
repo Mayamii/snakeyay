@@ -9,12 +9,21 @@ import snakegame.fachwert.enums.PictureName;
 import snakegame.material.AbstractPaintable;
 import snakegame.service.ImageStore;
 
+/*
+ * Die Klasse Head enthält alle Methoden und Variablen, 
+ * die den Kopf der Schlange betreffen.
+ */
 public class Head extends AbstractPaintable
 {
+    // Die Richtung
     private Direction _direction;
     private boolean _godmode;
     private boolean _dirty;
 
+    /*
+     * Richtung in die der Kopf zeigt.
+     * Zu Beginn des Spiels ist Rechts als Startrichtung vorgegeben.
+     */
     protected Head(Position pos)
     {
         super(pos, ImageStore.getImage(PictureName.HEADRIGHT));

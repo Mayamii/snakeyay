@@ -4,8 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+/*
+ * Testklasse für die Position-Klasse
+ */
 public class PositionTest
 {
+
+    /*
+     * Testet die Methode moveUp
+     */
     @Test
     public void testemoveUp()
     {
@@ -20,6 +27,9 @@ public class PositionTest
         assertEquals(22, position.getY());
     }
 
+    /*
+     * Testet die Methode moveDown
+     */
     @Test
     public void testemoveDown()
     {
@@ -34,6 +44,9 @@ public class PositionTest
         assertEquals(0, position.getY());
     }
 
+    /*
+     * Testet die Methode moveRight
+     */
     @Test
     public void testemoveRight()
     {
@@ -48,6 +61,9 @@ public class PositionTest
         assertEquals(0, position.getY());
     }
 
+    /*
+     * Testet die Methode moveLeft
+     */
     @Test
     public void testemoveLeft()
     {
