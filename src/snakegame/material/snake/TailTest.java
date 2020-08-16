@@ -8,9 +8,15 @@ import org.junit.Test;
 
 import snakegame.fachwert.Position;
 
+/*
+ * Testklasse zum Testen der Methoden der Klasse Head
+ */
 public class TailTest
 {
 
+    /*
+     * Testet die Methode getLength
+     */
     @Test
     public void testeGetLength()
     {
@@ -22,11 +28,10 @@ public class TailTest
         assertEquals(tail.getLength(), length);
     }
 
-    @Test
     /*
-     * @todo: Test Growenable funktioniert noch nicht
+     * Testet die Methode growenable
      */
-
+    @Test
     public void testeGrowenable()
     {
         Position pos = new Position(5, 5);

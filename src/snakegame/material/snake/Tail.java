@@ -12,6 +12,9 @@ import snakegame.material.AbstractPaintable;
 import snakegame.material.Paintable;
 import snakegame.service.ImageStore;
 
+/*
+ * Tail-Klasse der Schlange
+ */
 public class Tail extends AbstractPaintable implements Paintable
 {
 
@@ -21,6 +24,10 @@ public class Tail extends AbstractPaintable implements Paintable
     private int _growLength;
     private boolean _godmode;
 
+    /*
+     * Erstellt eine Schlange an der Position pos mit dem ImageIcon ima
+     * @param pos Positionen der Schlange
+     */
     protected Tail(Position pos, ImageIcon ima)
     {
         super(pos, ima);
@@ -31,16 +38,28 @@ public class Tail extends AbstractPaintable implements Paintable
         _godmode = false;
     }
 
+    /*
+     * Setzt den Gottmodus auf den eingegebenen Boolean
+     * @param godmode setzt den Gottmodus
+     */
     public void setGod(boolean godmode)
     {
         _godmode = godmode;
     }
 
+    /*
+     * Liefert die Länge der Schlange
+     * @return die Länge der Schlange
+     */
     public int getLength()
     {
         return _body.size();
     }
 
+    /*
+     * Bewegt die Schlange um einen Kasten auf die nächste Position
+     * Die letzte hintere Position wird dabei "entfernt" und vorne eine neue hinzugefügt
+     */
     public void move()
     {
         _body.addFirst(_nextPosition);
@@ -48,6 +67,9 @@ public class Tail extends AbstractPaintable implements Paintable
 
     }
 
+    /*
+     * update
+     */
     public void update()
     {
         _lastPiece = _body.getLast();
@@ -61,36 +83,59 @@ public class Tail extends AbstractPaintable implements Paintable
         }
     }
 
+    /*
+     * Wachstum der Schlange am hinteren
+     * Ende der Schlange
+     */
     public void grows()
     {
         _body.addLast(_lastPiece);
 
     }
 
+    /*
+     * Erhöhen der Länge um den Integer i
+     * @param i Wert, um den die Länge erhöht werden soll
+     */
     public void growenable(int i)
     {
 
         _growLength += i;
     }
 
+    /*
+     * @param position nächste Position
+     */
     public void setNextPosition(Position position)
     {
         _nextPosition = position;
     }
 
+    /*
+     * @param bodymassindex Mächtigkeit der Schlange
+     * @return liefert die x-Position des Tails, 
+     * für eine bestimmte Mächtigkeit bzw. Länge der Schlange
+     */
     public int getBodyX(int bodymassindex)
     {
         return _body.get(bodymassindex)
             .getX();
-
     }
 
+    /*
+     * @param bodymassindex Mächtigkeit der Schlange
+     * @return liefert die y-Position des Tails, 
+     * für eine bestimmte Mächtigkeit bzw. Länge der Schlange
+     */
     public int getBodyY(int bodymassindex)
     {
         return _body.get(bodymassindex)
             .getY();
     }
 
+    /*
+     * Paint-Methode
+     */
     @Override
     public void paint(Graphics g, Component frame)
     {

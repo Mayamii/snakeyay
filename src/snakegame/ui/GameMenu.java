@@ -12,6 +12,9 @@ import snakegame.fachwert.enums.MenuText;
 import snakegame.fachwert.enums.PictureName;
 import snakegame.service.ImageStore;
 
+/*
+ * Klasse für die Game Menüs
+ */
 public class GameMenu
 {
 
@@ -26,6 +29,10 @@ public class GameMenu
 
     }
 
+    /*
+     * Fügt ein neues Element zu der MenuItem Liste hinzu
+     * @param newItem neues MenuItem, was hinzugefügt werden soll
+     */
     public void add(MenuItem newItem)
     {
         if (_menuItems.isEmpty())
@@ -35,11 +42,16 @@ public class GameMenu
         _menuItems.add(newItem);
     }
 
+    /*
+     * Zeichnet das Menu
+     * @param g Graphics
+     * @param c Component 
+     */
     public void paint(Graphics g, Component c)
     {
         _image.paintIcon(c, g, _linksOben.getX(), _linksOben.getY());
 
-        //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 fï¿½r den linken Rand und 850-200 fï¿½r die rechte Begrenzung
+        //Das Spielfeld startet bei 25 und endet bei 850 --> 25+200 für den linken Rand und 850-200 für die rechte Begrenzung
 
         for (MenuItem menuItem : _menuItems)
         {
@@ -47,6 +59,9 @@ public class GameMenu
         }
     }
 
+    /*
+     * @return liefert das ausgewählte Item des Menus zurück
+     */
     public MenuItem getSelectedItem()
     {
         for (MenuItem menuItem : _menuItems)
@@ -56,10 +71,13 @@ public class GameMenu
                 return menuItem;
             }
         }
-        //wird niemals auftreten, weil wir immer mindestens ein Item hinzugefï¿½gen
+        //wird niemals auftreten, weil wir immer mindestens ein Item hinzufügen
         return null;
     }
 
+    /*
+     * Wählt das nächste MenuItem aus
+     */
     public void selectNext()
     {
         MenuItem aktuellesMenuItem;
@@ -72,6 +90,9 @@ public class GameMenu
         aktuellesMenuItem.setSelected(false);
     }
 
+    /*
+     * Wählt das vorherige MenuItem aus
+     */
     public void selectPrevious()
     {
         MenuItem aktuellesMenuItem;
@@ -85,6 +106,10 @@ public class GameMenu
 
     }
 
+    /*
+     * Gibt das MenuItem Item mit dem eingegeben Namen aus
+     * @param text Name des MenuItems
+     */
     public MenuItem getMenuItemBy(MenuText text)
     {
         for (MenuItem menuItem : _menuItems)

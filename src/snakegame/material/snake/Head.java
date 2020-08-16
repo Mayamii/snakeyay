@@ -9,12 +9,21 @@ import snakegame.fachwert.enums.PictureName;
 import snakegame.material.AbstractPaintable;
 import snakegame.service.ImageStore;
 
+/*
+ * Die Klasse Head enthält alle Methoden und Variablen, 
+ * die den Kopf der Schlange betreffen.
+ */
 public class Head extends AbstractPaintable
 {
+    // Die Richtung
     private Direction _direction;
     private boolean _godmode;
     private boolean _dirty;
 
+    /*
+     * Richtung in die der Kopf zeigt.
+     * Zu Beginn des Spiels ist Rechts als Startrichtung vorgegeben.
+     */
     protected Head(Position pos)
     {
         super(pos, ImageStore.getImage(PictureName.HEADRIGHT));
@@ -22,11 +31,19 @@ public class Head extends AbstractPaintable
         _godmode = false;
     }
 
+    /*
+     * Gottmodus festlegen
+     */
     public void setGod(boolean godmode)
     {
         _godmode = godmode;
     }
 
+    /*
+     * Zeichnet den Head der Sclange
+     * @param g Graphics, die gezeichnet werden
+     * @param frame Component, das gezeichnet wird
+     */
     public void paint(Graphics g, Component frame)
     {
 
@@ -52,6 +69,10 @@ public class Head extends AbstractPaintable
 
     }
 
+    /*
+     * Bewegungen des Kopfes, je nach "aktiver" Richtung.
+     * Der Kopf kann sich nach oben, unten, links und rechts bewegen
+     */
     public void move()
     {
         switch (_direction)
@@ -72,6 +93,10 @@ public class Head extends AbstractPaintable
         _dirty = false;
     }
 
+    /*
+     * Prüft, welche Richtung aktiv ist und verhindert einen U-Turn,
+     * bzw. verhindert ein Springen von einer Richtung in ihre entgegengesetzte Richtung
+     */
     private boolean isUturn(Direction dir)
     {
         return (_direction == Direction.RIGHT && dir == Direction.LEFT
@@ -80,6 +105,10 @@ public class Head extends AbstractPaintable
                 || _direction == Direction.DOWN && dir == Direction.UP);
     }
 
+    /*
+     * Festlegen der Richtung
+     * @param dir Direction
+     */
     public void setDirection(Direction dir)
     {
         if (dir == _direction || _dirty) return;
@@ -91,17 +120,26 @@ public class Head extends AbstractPaintable
         }
     }
 
+    /*
+     * Gibt die Position zurück
+     */
     public Direction getDirection()
     {
         return _direction;
     }
 
+    /*
+     * update
+     */
     @Override
     public void update()
     {
         move();
     }
 
+    /*
+     * @return gibt den Boolean Gottmodus zurück 
+     */
     public boolean getGod()
     {
         return _godmode;

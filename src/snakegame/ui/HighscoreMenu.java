@@ -10,6 +10,9 @@ import snakegame.fachwert.enums.PictureName;
 import snakegame.service.Highscore;
 import snakegame.service.ImageStore;
 
+/*
+ * Klasse zur Erzeugung des Highscore Menüs
+ */
 public class HighscoreMenu
 {
     Highscore _highscore;
@@ -21,6 +24,11 @@ public class HighscoreMenu
         _image = ImageStore.getImage(PictureName.HIGHSCORE);
     }
 
+    /*
+     * Zeichnet die Highscore Anzeige
+     * @param g Graphics
+     * @param c Component
+     */
     public void paint(Graphics g, Component c)
     {
         _image.paintIcon(c, g, new Position(248, 85).getX(),

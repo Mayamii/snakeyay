@@ -10,17 +10,30 @@ import java.util.Collections;
 import snakegame.fachwert.enums.GameState;
 import snakegame.material.ScoreEntry;
 
+/*
+ * Klasse zum Erstellen von Highscores
+ *
+ */
 public class Highscore
 {
     private final String _filename = "./Highscore.txt";
     private ArrayList<ScoreEntry> _scores = new ArrayList<>();
     GameState _oldGameState;
 
+    /*
+     * Liest den aktuellen Highscore aus einer Liste aus
+     */
     public Highscore()
     {
         readScoreFromFile();
     }
 
+    /*
+     * Fügt einen neuen Eintrag zum Highscore hinzu
+     * @param name Name des Spielers
+     * @param score erreichte Punktzahl des Spielers
+     *
+     */
     public void addNewEntry(String name, int score)
     {
         if (checkName(name))
@@ -35,6 +48,10 @@ public class Highscore
         writeScoretoFile();
     }
 
+    /*
+     * Prüft ob der Name des Spielers eine gültige Eingabe ist
+     * @return gibt einen boolean zurück, ob der eingegebene Name gültig ist
+     */
     private boolean checkName(String name)
     {
         if (name == null)
@@ -46,6 +63,9 @@ public class Highscore
 
     }
 
+    /*
+     * Schreibt einen Punktestand zu der Highscore Datei hinzu
+     */
     void writeScoretoFile()
     {
         try (FileWriter writer = new FileWriter(_filename, false))
@@ -61,6 +81,9 @@ public class Highscore
         }
     }
 
+    /*
+     * liest einen Punktestand aus der Datei aus
+     */
     void readScoreFromFile()
     {
         try (FileReader reader = new FileReader(_filename))
@@ -82,16 +105,27 @@ public class Highscore
         }
     }
 
+    /*
+     * Setzt den Spielstatus
+     * @param gamestate nächster Spielstatus
+     */
     public void setGameState(GameState gamestate)
     {
         _oldGameState = gamestate;
     }
 
+    /*
+     * @return gibt den Spielstatus zurück
+     */
     public GameState getGameState()
     {
         return _oldGameState;
     }
 
+    /*
+     * @param i Platzierung auf der Highscore Liste
+     * @return gibt den Punktestandeintrag ScoreEntry an der Stelle i zurück
+     */
     public ScoreEntry getScore(int i)
     {
         return _scores.get(i);

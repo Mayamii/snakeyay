@@ -14,12 +14,15 @@ import snakegame.material.food.SlowFood;
 import snakegame.material.food.SuperFood;
 import snakegame.material.snake.Snake;
 
+/*
+ * ObjectManager Klasse 
+ */
 public class ObjectManager
 {
     private Snake _snake;
     ArrayList<Food> _foodlist;
 
-    //spï¿½ter noch andere foods und Labyrinth
+    //später sind hier noch andere Foods und Labyrinth hinzufügbar
 
     public ObjectManager(Snake sneek)
     {
@@ -29,11 +32,20 @@ public class ObjectManager
         addRandomGoodFood();
     }
 
+    /*
+     * @return gibt einen zufälligen Integer Wert aus
+     */
     private int randomInt()
     {
         return (int) (100.0 * Math.random());
     }
 
+    /*
+     * Fügt Essen dem Spielfeld hinzu 
+     * Je nach Effekt wird zwischen Gutem und Schlechtem Essen unterschieden
+     * @param food Essen, was im Spielfeld angezeigt wird
+     * 
+     */
     public void addRandomFood(Food food)
     {
         switch (food.getEffect())
@@ -56,12 +68,15 @@ public class ObjectManager
 
     }
 
+    /*
+     * Fügt ein zufälliges gutes Essen hinzu
+     */
     private void addRandomGoodFood()
     {
 
         int i = randomInt();
-        //prozente fï¿½r Foodwahrscheinlichkeit
-        // alle foods zusammen mï¿½ssen 100 ergeben!!!
+        //prozente für Foodwahrscheinlichkeit
+        // alle foods zusammen müssen 100 ergeben!
         int normalfood = 50;
         int superfood = 10;
         int invinciblefood = 15;
@@ -92,11 +107,14 @@ public class ObjectManager
 
     }
 
+    /*
+     * Fügt ein zufälliges bad Food zu dem Spielfeld hinzu
+     */
     private void addRandomBadFood()
     {
         int i = randomInt();
-        //prozente fï¿½r Foodwahrscheinlichkeit
-        // alle foods zusammen mï¿½ssen 100 ergeben!!!
+        //prozente für Foodwahrscheinlichkeit
+        // alle foods zusammen müssen 100 ergeben!
         int ewwfood = 40;
         int fastfood = 40;
         int inversefood = 20;
@@ -121,16 +139,26 @@ public class ObjectManager
 
     }
 
+    /*
+     * @return gibt die Länge der Essensliste (foodlist) zurück
+     */
     public int getLengthList()
     {
         return _foodlist.size();
     }
 
+    /*
+     * Fügt ein Essen (Food) zur Essensliste (foodlist) hinzu
+     */
     public void giveFood(Food fuud)
     {
         _foodlist.add(fuud);
     }
 
+    /*
+     * Prüft, ob die Schlange in ihren eigenen Körper hineinbeißt
+     * @return wahr, falls sie sich beißt 
+     */
     public boolean bitesOwnBody()
     {
 
@@ -146,21 +174,39 @@ public class ObjectManager
         return false;
     }
 
+    /*
+     * Gibt ein Essen der Liste zurück
+     * @param i Stelle der Liste
+     * @return Essen aus der Essensliste an der Stelle i
+     */
     public Food returnFood(int i)
     {
         return _foodlist.get(i);
     }
 
+    /*
+     * Fügt ein Food der Foodlist hinzu
+     * @param food Das Essen, das der Liste hinzugefügt wird
+     */
     public void addFoodtoList(Food food)
     {
         _foodlist.add(food);
     }
 
+    /*
+     * Entfernt ein Food aus der Foodlist
+     * @param food Das Essen, das von der Liste entfernt wird
+     */
     public void removeFoodfromList(Food food)
     {
         _foodlist.remove(food);
     }
 
+    /*
+     * Wenn sich der Kopf der Schlange auf derselben Position wie das
+     * Food befindet, wird das Food gegessen, das Essen aus der foodlist entfernt
+     * und ein neues Food hinzugefügt und ein Sound abgespielt (das Schmatzen der Schlange)
+     */
     public void checkFoodCollision()
     {
         for (Food food : _foodlist)
@@ -178,11 +224,20 @@ public class ObjectManager
         }
     }
 
+    /*
+     * Methode für die Aktionen, die eintreten bzw. ausgeführt werden
+     * Wenn die Schlange das Labyrinth berührt 
+     * Bisher noch kein Labyrinth erzeugt evtl. beim Ausbauen des Spiels verwenden
+     * @return false, weil kein Labyrinth existiert, das getroffen werden kann
+     */
     public boolean hitsLabyrinth()
     {
         return false;
     }
 
+    /*
+     * update
+     */
     public void update()
     {
         if ((bitesOwnBody() || hitsLabyrinth())
@@ -194,6 +249,9 @@ public class ObjectManager
 
     }
 
+    /*
+     * @return iefert den Punktestand (score) des Spiels
+     */
     public int getScore()
     {
         return _snake.getScore();
