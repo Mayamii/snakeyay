@@ -2,6 +2,10 @@ package snakegame.ui;
 
 import java.awt.Font;
 
+/*
+ * Schriftart für das Menü
+ * Für ein einheitliches Aussehen
+ */
 public class Util
 
 {

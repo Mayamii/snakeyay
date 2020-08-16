@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import snakegame.fachwert.Position;
 import snakegame.fachwert.enums.MenuText;
 
+/*
+ * Klasse für die MenuItems, die in einem Menu angezeigt werden können
+ */
 public class MenuItem
 {
     protected static final int GRIDSIZE = 5;
