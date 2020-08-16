@@ -52,6 +52,8 @@ public class ScoreEntry implements Comparable<ScoreEntry>
 
     /*
      * Wandelt den Punktestand und Namen in String um
+     * @ return liefert eine eindeutige Kennung des Punktestands und Namen
+     * in Form eines Strings zurück. 
      */
     @Override
     public String toString()
@@ -60,7 +62,7 @@ public class ScoreEntry implements Comparable<ScoreEntry>
 
     }
 
-    /*
+    /* 
      * @return liefert den formatierten String
      */
     public String getFormatString()
